@@ -10,7 +10,11 @@ import { SearchFormComponent } from './booking/search-form/search-form.component
 import { SearchResultsComponent } from './booking/search-results/search-results.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TopNavigationComponent } from './top-navigation/top-navigation.component';
+import { LeftNavigationComponent } from './left-navigation/left-navigation.component';
+import { AuthService } from './_service/auth.service';
+import { TokenInterceptService } from './_interceptors/token-intercept.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +24,9 @@ import { HttpClientModule } from '@angular/common/http';
     BookingComponent,
     SearchFormComponent,
     SearchResultsComponent,
-    NavbarComponent
+    NavbarComponent,
+    TopNavigationComponent,
+    LeftNavigationComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +35,11 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptService, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

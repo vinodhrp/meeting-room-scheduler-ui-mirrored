@@ -3,15 +3,13 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><strong>Sign in </strong></h3>
-                <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#" routerLink ="/login">Forgot password?</a>
-                </div>
             </div>
 
             <div class="panel-body">
-                <form role="form" id="quickForm" (ngSubmit)="onSubmit(heroForm)" #heroForm [formGroup]="loginForm">
-                    <!-- <div class="alert alert-danger">
-                        <a class="close" data-dismiss="alert" href="#">×</a>Incorrect Username or Password!
-                    </div> -->
+                <form role="form" id="quickForm" (ngSubmit)="onSubmit(heroForm)" #heroForm [formGroup]="loginForm" autocomplete="off">
+                    <div class="alert alert-danger" *ngIf="showError">
+                        <a class="close" data-dismiss="alert" href="#">×</a>{{loginErrorMsg}}
+                    </div>
                     <!-- <div class="row">
                         <div class="col-xs-12 col-sm-4 col-md-4">
                             <div class="form-group">
@@ -72,6 +70,8 @@
                             <a href="#" routerLink ="/register">
                                 Sign Up Here
                             </a>
+                        </div>
+                        <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#" routerLink ="/login">Forgot password?</a>
                         </div>
 
                     </div>

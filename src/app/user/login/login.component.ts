@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/_service/auth.service';
 import { OAuth } from 'src/app/_model/o-auth.model';
 import { Login } from 'src/app/_model/login';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,8 @@ export class LoginComponent implements OnInit {
 
   modelLogin = new Login(null, null);
 
+  loginErrorMsg:String;
+  showError:boolean;
   
 
   loginForm = new FormGroup({
@@ -24,9 +27,18 @@ export class LoginComponent implements OnInit {
  
 
   constructor(private authService:AuthService,
-              private router:Router ) { }
+              private router:Router ) { 
+                //this.showError = false;
+              }
 
   ngOnInit(): void {
+    var isLogged = this.authService.isAuthenticated();
+    if (isLogged) {
+      this.router.navigate(["/booking"]);
+      return;
+    }
+
+    this.router.navigate(["/login"]);
   }
 
   onSubmit1(heroForm): void {
@@ -41,15 +53,26 @@ export class LoginComponent implements OnInit {
     this.authService.aunthenticate(this.UserName.value, this.Password.value)
         .subscribe(
             data => (this.redirecToDashBoard(data)),
-            err => console.log('Bad Credentials........', err)
+            err => {
+              console.log('Bad Credentials........', err)
+              this.handleInvalidLogin(err);
+            }
     )
   }
 
   redirecToDashBoard(oauth: OAuth) {
     console.log('Login Success with User Id ........', this.UserName.value)
-    if (oauth != null && oauth.access_token != null) {
+    if (this.authService.isAuthenticated) {
       this.router.navigate(["/booking"]);
+    }else{
+      this.router.navigate(["/login"]);
     }
+  }
+
+  handleInvalidLogin(err:HttpErrorResponse){
+    this.showError = true;
+    this.loginErrorMsg = 'Bad Credentials !!! ';
+    this.router.navigate(["/login"]);
   }
 
   get UserName() {

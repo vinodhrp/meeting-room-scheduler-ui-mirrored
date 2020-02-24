@@ -40,8 +40,31 @@ export class AuthService {
       .pipe(tap(token => this.saveAuthDetailsToStorage(token, username)));
   }
 
+  getUser(empId: String): Observable<User> {
+    return this.httpClient.get<User>(this.baseUrl + '/userprofile/fetchuser/'+empId);
+  }
+
   private saveAuthDetailsToStorage(token: OAuth, username: string) {
     localStorage.setItem('access_token', token.access_token);
     localStorage.setItem('user_id', username);
+  }
+
+  public isAuthenticated(): boolean {
+    const oAuthToken = localStorage.getItem('access_token');
+    const emailId = localStorage.getItem('user_id');
+    //check cookie expiry also
+    if (oAuthToken != null && emailId != null) {
+      return true;
+    }
+    return false;
+  }
+
+  logout() {
+    this.deleteAuthDetailsFromStorage();
+  }
+
+  private deleteAuthDetailsFromStorage() {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('user_id');
   }
 }
