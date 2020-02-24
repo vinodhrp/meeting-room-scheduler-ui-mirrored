@@ -94,7 +94,7 @@ export class SearchFormComponent implements OnInit {
   }
 
   setMinToTime() {
-    let selectedMinute = (document.getElementById("fromTime").value).slice(2, 4);
+    let selectedMinute = null;//(document.getElementById("fromTime").value).slice(2, 4);
     let maxHour = this.currentHour;
     let maxMinute = parseInt(selectedMinute) + 15;
     if (maxMinute >= 60) {
