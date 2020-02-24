@@ -16,6 +16,17 @@ import { LeftNavigationComponent } from './left-navigation/left-navigation.compo
 import { AuthService } from './_service/auth.service';
 import { TokenInterceptService } from './_interceptors/token-intercept.service';
 
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import {MatIconModule} from '@angular/material/icon';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +44,14 @@ import { TokenInterceptService } from './_interceptors/token-intercept.service';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatIconModule,
+    NgxMaterialTimepickerModule
+   
   ],
   providers: [
     AuthService,

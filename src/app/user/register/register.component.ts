@@ -12,24 +12,41 @@ import { RestResponse } from 'src/app/_model/rest-response.model';
 export class RegisterComponent implements OnInit {
 
   regForm: FormGroup;
+  submitted = false;
+
 
   constructor(private authService: AuthService,
-    private router: Router,
-    public formBuilder: FormBuilder) { }
-    
- 
+    private router: Router, private formBuilder: FormBuilder) { }
+
+
   ngOnInit() {
+
     var isLogged = this.authService.isAuthenticated();
     if (isLogged) {
       this.router.navigate(["/booking"]);
       return;
     }
-    this.buildForm();
+
+    this.regForm = this.formBuilder.group({
+      fullName: ['', Validators.required],
+      usrEmpId: ['', [Validators.required, Validators.pattern("[0-9]*")]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]]
+
+    }, {
+      validator: this.MustMatch('password', 'confirmPassword')
+    });
   }
 
+  get f() { return this.regForm.controls; }
 
   registerUser(form: any) {
-    console.log(' ??????  ',this.regForm.value);
+    this.submitted = true;
+    if (this.regForm.invalid) {
+      return;
+    }
+
+    console.log(' ??????  ', this.regForm.value);
     this.authService.register(this.regForm.value).subscribe(
       data => this.handleRegisterResonse(data),
       err => console.log('Error in Registration........', err),
@@ -41,7 +58,7 @@ export class RegisterComponent implements OnInit {
   private handleRegisterResonse(apiResponse: RestResponse) {
     if (apiResponse.scode === '200') {
       this.regForm.reset();
-      console.log('register sucess..........');
+      console.log('register success..........');
       this.router.navigate(["/login"]);
     }
   }
@@ -51,40 +68,22 @@ export class RegisterComponent implements OnInit {
     this.router.navigate(["/login"]);
   }
 
-  buildForm() {
-    this.regForm = this.formBuilder.group({
-      fullName: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.minLength(3)
-      ])),
-      usrEmpId: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern('[0-9]{6}')
-      ])),
-      password: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
-      ])),
-      confirmPassword: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
-      ]))
-    });
-  }
 
-  validationMessages = {
-    'fullName': [
-      { type: 'required', message: 'Name is required.' },
-      { type: 'minlength', message: 'Name must be at least 3 characters long.' }
-    ],
-    'usrEmpId': [
-      { type: 'required', message: 'Email is required.' },
-      { type: 'pattern', message: 'Please enter a valid email.' }
-    ],
-    'password': [
-      { type: 'required', message: 'Password is required.' },
-      { type: 'pattern', message: 'Password:min 5 chars,1 uppercase/lowercase/number.' }
-    ],
-  };
+  MustMatch(controlName: string, matchingControlName: string) {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
+
+      if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+        return;
+      }
+
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({ mustMatch: true });
+      } else {
+        matchingControl.setErrors(null);
+      }
+    }
+  }
 
 }
