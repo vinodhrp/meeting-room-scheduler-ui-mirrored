@@ -1,6 +1,6 @@
 <div class="container register-form">
 
-    <div role="form" id="quickForm" class="form" [formGroup]="searchForm">
+    <div role="form" id="quickForm" class="form">
 
 
         <div class="form-content" style="margin-top: 4%;">
@@ -39,9 +39,10 @@
                         <label>From Time</label>
 
                         <div class="minutes-gap-example">
-                            <input id="fromTime" placeholder="From time" min="{{currentTime}}" class="form-control"
-                                [ngxTimepicker]="with5Gap" readonly required>
-                            <ngx-material-timepicker #with5Gap [theme]="darkTheme" [minutesGap]="5">
+                            <input id="fromTime" [(ngModel)]="fTime" (ngModelChange)="setMinToTime()"
+                                 placeholder="From time" min="{{currentTime}}"
+                                class="form-control" [ngxTimepicker]="with5Gap" readonly required>
+                            <ngx-material-timepicker #with5Gap [theme]="greenTheme" [minutesGap]="5">
                             </ngx-material-timepicker>
                         </div>
 
@@ -51,9 +52,9 @@
                     <div class="form-group">
                         <label>To Time</label>
                         <div class="minutes-gap-example">
-                            <input id="toTime" placeholder="To time" min="{{currentTime}}" class="form-control"
+                            <input id="toTime" placeholder="To time" min="{{minToTime}}" class="form-control"
                                 [ngxTimepicker]="with5Gap2" readonly required>
-                            <ngx-material-timepicker #with5Gap2 [theme]="darkTheme" [minutesGap]="5">
+                            <ngx-material-timepicker #with5Gap2 [theme]="greenTheme" [minutesGap]="5">
                             </ngx-material-timepicker>
                         </div>
                     </div>
