@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../_model/user.model';
 import { AuthService } from '../_service/auth.service';
 import { Router } from '@angular/router';
+import { ConstantService } from '../_service/constant.service';
 
 @Component({
   selector: 'app-top-navigation',
@@ -11,7 +12,8 @@ import { Router } from '@angular/router';
 export class TopNavigationComponent implements OnInit {
 
   constructor(private authService: AuthService,
-              private router: Router) { }
+              private router: Router,
+              private cons: ConstantService) { }
 
   user: User;
 
@@ -20,7 +22,7 @@ export class TopNavigationComponent implements OnInit {
     this.authService.getUser(localStorage.getItem('user_id')).subscribe(data => {
       this.user = data;
       console.log("In TopNavigationComponent : User Info of LoggedIn User : ", this.user);
-      localStorage.setItem('full_name', this.user.fullName);
+      localStorage.setItem(this.cons.fullName, this.user.fullName);
     });
   }
 

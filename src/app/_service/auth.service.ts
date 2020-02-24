@@ -7,20 +7,19 @@ import { RestResponse } from '../_model/rest-response.model';
 import { OAuth } from '../_model/o-auth.model';
 
 import { tap } from 'rxjs/operators';
+import { ConstantService } from './constant.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private baseUrl = 'http://localhost:8080';
 
-
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,private cons: ConstantService) { }
 
   register(user: User): Observable<RestResponse> {
     console.log('Value Of User in ng : ' ,user);
-    return this.httpClient.post<RestResponse>(this.baseUrl + '/openapi/register', user);
+    return this.httpClient.post<RestResponse>(this.cons.baseURI + '/openapi/register', user);
   }
 
 
@@ -36,22 +35,22 @@ export class AuthService {
     }
     console.log('Req Header : ' , headers);
     console.log('Req Body : ' , body);
-    return this.httpClient.post<OAuth>(this.baseUrl + '/oauth/token', body, { headers })
+    return this.httpClient.post<OAuth>(this.cons.baseURI + '/oauth/token', body, { headers })
       .pipe(tap(token => this.saveAuthDetailsToStorage(token, username)));
   }
 
   getUser(empId: String): Observable<User> {
-    return this.httpClient.get<User>(this.baseUrl + '/userprofile/fetchuser/'+empId);
+    return this.httpClient.get<User>(this.cons.baseURI + '/userprofile/fetchuser/'+empId);
   }
 
   private saveAuthDetailsToStorage(token: OAuth, username: string) {
-    localStorage.setItem('access_token', token.access_token);
-    localStorage.setItem('user_id', username);
+    localStorage.setItem(this.cons.accessToken, token.access_token);
+    localStorage.setItem(this.cons.userId, username);
   }
 
   public isAuthenticated(): boolean {
-    const oAuthToken = localStorage.getItem('access_token');
-    const emailId = localStorage.getItem('user_id');
+    const oAuthToken = localStorage.getItem(this.cons.accessToken);
+    const emailId = localStorage.getItem(this.cons.userId);
     //check cookie expiry also
     if (oAuthToken != null && emailId != null) {
       return true;
@@ -64,7 +63,8 @@ export class AuthService {
   }
 
   private deleteAuthDetailsFromStorage() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user_id');
+    localStorage.removeItem(this.cons.accessToken);
+    localStorage.removeItem(this.cons.userId);
+    localStorage.removeItem(this.cons.fullName);
   }
 }

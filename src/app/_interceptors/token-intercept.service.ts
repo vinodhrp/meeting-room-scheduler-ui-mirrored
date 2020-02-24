@@ -4,6 +4,7 @@ import { AuthService } from '../_service/auth.service';
 import { Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
+import { ConstantService } from '../_service/constant.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ import { catchError } from 'rxjs/operators';
 export class TokenInterceptService implements HttpInterceptor {
 
   constructor(private auth: AuthService,
-              private router: Router) { }
+              private router: Router,
+              private cons: ConstantService) { }
 
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -31,7 +33,7 @@ export class TokenInterceptService implements HttpInterceptor {
   addTokenToAuthenticatedRequest(request: HttpRequest<any>) {
     return request.clone({
       setHeaders: {
-        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+        Authorization: `Bearer ${localStorage.getItem(this.cons.accessToken)}`
       }
     });
   }

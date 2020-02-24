@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/_service/auth.service';
 import { RestResponse } from 'src/app/_model/rest-response.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +14,8 @@ export class RegisterComponent implements OnInit {
 
   regForm: FormGroup;
   submitted = false;
+  regErrorMsg:String;
+  showError:boolean;
 
 
   constructor(private authService: AuthService,
@@ -46,19 +49,20 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    console.log(' ??????  ', this.regForm.value);
+    console.log(' Reg Form Values :   ', this.regForm.value);
     this.authService.register(this.regForm.value).subscribe(
       data => this.handleRegisterResonse(data),
-      err => console.log('Error in Registration........', err),
-      () => console.log('HTTP request completed.')
+      err => {
+        console.log('Error in Registration........', err);
+        this.handleInvalidReg(err);
+      }
     );
 
   }
 
   private handleRegisterResonse(apiResponse: RestResponse) {
-    if (apiResponse.scode === '200') {
-      this.regForm.reset();
-      console.log('register success..........');
+    console.log('register success..........',apiResponse) ;
+    if (apiResponse.scode === 'OK') {
       this.router.navigate(["/login"]);
     }
   }
@@ -66,6 +70,13 @@ export class RegisterComponent implements OnInit {
   redirectLogin() {
     this.regForm.reset();
     this.router.navigate(["/login"]);
+  }
+
+  handleInvalidReg(err:HttpErrorResponse){
+    this.showError = true;
+    this.regErrorMsg = err.error.message +'  !!!';
+    console.log('err ' +err);
+    this.router.navigate(["/register"]);
   }
 
 

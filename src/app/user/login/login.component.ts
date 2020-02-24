@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
 
 
   onSubmit(form: any) {//of Type NgForm
-    this.loginForm.markAllAsTouched();
+   // this.loginForm.markAllAsTouched();
     this.authService.aunthenticate(this.UserName.value, this.Password.value)
         .subscribe(
             data => (this.redirecToDashBoard(data)),

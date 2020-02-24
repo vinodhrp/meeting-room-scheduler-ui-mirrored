@@ -14,12 +14,7 @@ export class BookingComponent implements OnInit {
   user:User;
 
   ngOnInit() {
-    console.log('In Booking Component : Trying to fetch User Info : ')
-    this.authService.getUser(localStorage.getItem('user_id')).subscribe(data => {
-      this.user= data;
-      console.log("In Booking Component : User Info of LoggedIn User : ", this.user);
-      localStorage.setItem('full_name',this.user.fullName);
-    });
+   
   }
 
 }
