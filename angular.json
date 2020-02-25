@@ -29,18 +29,9 @@
               "src/dist/img"
             ],
             "styles": [
-              "src/plugins/fontawesome-free/css/all.min.css",
-              "src/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css",
-              "src/plugins/icheck-bootstrap/icheck-bootstrap.min.css",
-              "src/dist/css/adminlte.min.css"
+             
             ],
             "scripts": [
-              "src/plugins/jquery/jquery.min.js",
-              "src/plugins/jquery-ui/jquery-ui.min.js",
-              "src/plugins/bootstrap/js/bootstrap.bundle.min.js",
-              "src/dist/js/adminlte.js",
-              "src/dist/js/pages/dashboard.js",
-              "src/dist/js/demo.js"
             ]
           },
           "configurations": {

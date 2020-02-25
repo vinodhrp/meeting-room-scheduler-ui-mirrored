@@ -18,7 +18,7 @@
   </div>
 
   <!-- SEARCH FORM -->
-  <form class="form-inline ml-3">
+  <form class="form-inline ml-3" *ngIf="user != null">
     <div class="input-group input-group-sm">
       <li class="nav-item d-none d-sm-inline-block">
         <label class="nav-link"> Welcome : {{user.fullName}} </label>
