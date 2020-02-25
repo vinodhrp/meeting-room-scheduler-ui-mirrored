@@ -12,8 +12,8 @@ import { ConstantService } from '../_service/constant.service';
 export class TopNavigationComponent implements OnInit {
 
   constructor(private authService: AuthService,
-    private router: Router,
-    private cons: ConstantService) { }
+              private router: Router,
+              private cons: ConstantService) { }
 
   user: User;
 
@@ -27,8 +27,9 @@ export class TopNavigationComponent implements OnInit {
   }
 
 
-  logout() {
+  logout(){
     this.authService.logout();
     this.router.navigate['/login'];
   }
+
 }

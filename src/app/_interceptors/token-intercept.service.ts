@@ -26,7 +26,8 @@ export class TokenInterceptService implements HttpInterceptor {
     }
 
     request = this.addTokenToAuthenticatedRequest(request);
-    return next.handle(request);
+    return next.handle(request).pipe(
+      catchError((err) => this.handleAuthHTTPErrorResponse(err)));
 
   }
 

@@ -6,22 +6,23 @@
       <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <label class="nav-link">Home</label>
+      <a routerLink="/booking" class="nav-link">Home</a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <label class="nav-link">Contact</label>
+      <a routerLink="/booking" class="nav-link">Contact</a>
     </li>
   </ul>
 
+
   <div class="mx-auto">
-    <label class="nav-item d-none d-sm-inline-block">Glassdoor Booking</label>
+    <li class="nav-item d-none d-sm-inline-block">Glassdoor Booking</li>
   </div>
 
   <!-- SEARCH FORM -->
   <form class="form-inline ml-3">
     <div class="input-group input-group-sm">
       <li class="nav-item d-none d-sm-inline-block">
-        <label class="nav-link"> Welcome : {{user.fullName}} </label>
+        <a class="nav-link"> Welcome : {{user.fullName}} </a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a class="nav-link"> | </a>
@@ -29,20 +30,18 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a class="nav-link" href="#" (click)="logout()"> Not Me ? </a>
       </li>
-
+      
     </div>
   </form>
 
 </nav>
-<!-- /.navbar -->
 
-
-<nav class="main-header navbar navbar-expand fixed-bottom bg-info">
+<nav class="navbar navbar bg-info fixed-bottom">
   <div class="container-fluid">
-    <div class="navbar-header">
-      <li class="nav-item d-none d-sm-inline-block">
-        <a class="nav-link"> Copyright © Cognizant - Rabobank </a>
-      </li>
-    </div>
+      <div class="navbar-header">
+          <li class="nav-item d-none d-sm-inline-block">
+            <a class="nav-link"> Copyright © Cognizant - Rabobank </a>
+          </li>
+      </div>
   </div>
 </nav>
