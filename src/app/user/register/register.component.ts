@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/_service/auth.service';
 import { RestResponse } from 'src/app/_model/rest-response.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MessageService } from 'src/app/_service/message.service';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,8 @@ export class RegisterComponent implements OnInit {
 
 
   constructor(private authService: AuthService,
-    private router: Router, private formBuilder: FormBuilder) { }
+    private router: Router, private formBuilder: FormBuilder,
+    private messageService: MessageService) { }
 
 
   ngOnInit() {
@@ -63,9 +65,15 @@ export class RegisterComponent implements OnInit {
   private handleRegisterResonse(apiResponse: RestResponse) {
     console.log('register success..........',apiResponse) ;
     if (apiResponse.scode === 'OK') {
+      this.sendMessage();
       this.router.navigate(["/login"]);
     }
   }
+
+  sendMessage(): void {
+    // send message to subscribers via observable subject
+    this.messageService.sendMessage('Message from Home Component to App Component!');
+}
 
   redirectLogin() {
     this.regForm.reset();

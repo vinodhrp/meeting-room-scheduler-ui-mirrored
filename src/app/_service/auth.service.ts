@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { User } from '../_model/user.model';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -15,10 +15,29 @@ import { ConstantService } from './constant.service';
 export class AuthService {
 
 
-  constructor(private httpClient: HttpClient,private cons: ConstantService) { }
+  //regSuccess = new Subject<boolean>();
+  //sessionTimeOut = new Subject<boolean>();
+
+  private subject = new Subject<any>();
+
+  passOnCustomMessage(message: string) {
+    console.log('Event Emitted !!!! in service : ' +message)
+    this.subject.next(message);
+  }
+
+  clearMessages() {
+    console.log('Event Cleared !!!! in service : ')
+    this.subject.next();
+  }
+
+  getCustomMessage(): Observable<any> {
+    return this.subject.asObservable();
+  }
+
+  constructor(private httpClient: HttpClient, private cons: ConstantService) { }
 
   register(user: User): Observable<RestResponse> {
-    console.log('Value Of User in ng : ' ,user);
+    console.log('Value Of User in ng : ', user);
     return this.httpClient.post<RestResponse>(this.cons.baseURI + '/openapi/register', user);
   }
 
@@ -33,14 +52,14 @@ export class AuthService {
       'Authorization': 'Basic ' + btoa('glassdoor:glassdoor'),
       'Content-type': 'application/x-www-form-urlencoded'
     }
-    console.log('Req Header : ' , headers);
-    console.log('Req Body : ' , body);
+    console.log('Req Header : ', headers);
+    console.log('Req Body : ', body);
     return this.httpClient.post<OAuth>(this.cons.baseURI + '/oauth/token', body, { headers })
       .pipe(tap(token => this.saveAuthDetailsToStorage(token, username)));
   }
 
   getUser(empId: String): Observable<User> {
-    return this.httpClient.get<User>(this.cons.baseURI + '/userprofile/fetchuser/'+empId);
+    return this.httpClient.get<User>(this.cons.baseURI + '/userprofile/fetchuser/' + empId);
   }
 
   private saveAuthDetailsToStorage(token: OAuth, username: string) {
