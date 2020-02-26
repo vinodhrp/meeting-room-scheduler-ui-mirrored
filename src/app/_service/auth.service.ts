@@ -18,6 +18,10 @@ export class AuthService {
   //regSuccess = new Subject<boolean>();
   //sessionTimeOut = new Subject<boolean>();
 
+  showMessage:boolean;
+
+  showAuthError:boolean;
+
   private subject = new Subject<any>();
 
   passOnCustomMessage(message: string) {

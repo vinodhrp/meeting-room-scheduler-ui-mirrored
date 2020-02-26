@@ -48,6 +48,7 @@ export class TokenInterceptService implements HttpInterceptor {
 
   tokenExpiredHandler(){
     this.auth.logout();
+    this.auth.showAuthError = true;
     this.router.navigate(["/login"]);
   }
 

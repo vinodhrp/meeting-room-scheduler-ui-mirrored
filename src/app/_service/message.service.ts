@@ -9,8 +9,8 @@ export class MessageService {
   private subject = new Subject<any>();
 
   sendMessage(message: string) {
-    console.log('In service .... ' +message)
-    this.subject.next({ text: message });
+    //console.log('In service .... ' +message)
+    this.subject.next(message);
   }
 
   clearMessages() {
@@ -18,7 +18,7 @@ export class MessageService {
   }
 
   getMessage(): Observable<any> {
-    console.log('In service .Observable... ' )
+    //console.log('In service .Observable... ' )
     return this.subject.asObservable();
   }
 }

@@ -66,13 +66,14 @@ export class RegisterComponent implements OnInit {
     console.log('register success..........',apiResponse) ;
     if (apiResponse.scode === 'OK') {
       this.sendMessage();
+      this.authService.showMessage = true;
       this.router.navigate(["/login"]);
     }
   }
 
   sendMessage(): void {
     // send message to subscribers via observable subject
-    this.messageService.sendMessage('Message from Home Component to App Component!');
+    this.messageService.sendMessage('Registered Successfully !!!');
 }
 
   redirectLogin() {
