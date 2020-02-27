@@ -1,14 +1,16 @@
-import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { BookingService } from 'src/app/_service/booking.service';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
-
+import { Room } from 'src/app/_model/room.model';
+import { RoomService } from 'src/app/_service/room.service';
 @Component({
   selector: 'app-search-form',
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.scss']
 })
 export class SearchFormComponent implements OnInit {
+  roomList: Room[];
   minDate: Date;
   maxDate: Date;
   selectedDate: any;
@@ -17,27 +19,25 @@ export class SearchFormComponent implements OnInit {
   currentTime: any;
   currentMinutesRemainder: any;
   minToTime: any;
-
-
+  toState  = true
 
   searchForm: FormGroup;
-  greenTheme: NgxMaterialTimepickerTheme = {
+  blueTheme: NgxMaterialTimepickerTheme = {
     container: {
-      bodyBackgroundColor: '#80c775',
+      bodyBackgroundColor: '#3591ab',
       buttonColor: '#fff'
     },
     dial: {
-      dialBackgroundColor: '#2ba318',
+      dialBackgroundColor: '#46cdf2',
     },
     clockFace: {
-      clockFaceBackgroundColor: '#2ba318',
+      clockFaceBackgroundColor: '#46cdf2',
       clockHandColor: '#9fbd90',
       clockFaceTimeInactiveColor: '#fff'
     }
   };
 
-  public roomList: any[];
-  constructor(private service: BookingService, private formBuilder: FormBuilder) {
+  constructor(private service: BookingService, private formBuilder: FormBuilder, private roomService: RoomService) {
 
     this.searchForm = this.formBuilder.group({});
 
@@ -78,11 +78,13 @@ export class SearchFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this.roomList = this.service.fetchRoomList();
+    this.roomService.getAllRooms().subscribe((data: Room[]) => {
+      this.roomList = [...data]
+    })
 
   }
 
- 
+
   fetchBookedData() {
     console.log("search");
     //this.service.fetchBookedData();
@@ -93,15 +95,26 @@ export class SearchFormComponent implements OnInit {
     //this.service.bookRoom();
   }
 
-  setMinToTime() {
-    let selectedMinute = null;//(document.getElementById("fromTime").value).slice(2, 4);
-    let maxHour = this.currentHour;
-    let maxMinute = parseInt(selectedMinute) + 15;
+  setMinToTime(minute: HTMLInputElement) {
+    let selectedTime = (minute.value);
+    let maxHour = parseInt(selectedTime.substr(0, selectedTime.indexOf(':')));
+    let maxMinute = parseInt(selectedTime.substr(selectedTime.indexOf(':') + 1, 3)) + 15;
+    let type = selectedTime.substr(selectedTime.length - 2);
     if (maxMinute >= 60) {
       maxMinute -= 60;
       maxHour += 1;
+      if (maxHour === 12) {
+        if (type === "pm") {
+          type = "am";
+        }
+        else {
+          type = "pm"
+        }
+      }
     }
-    this.minToTime = maxHour + ":" + maxMinute + " pm";
+    this.minToTime = maxHour + ":" + maxMinute + " " + type;
+    this.toState = false;
+
   }
 
 }

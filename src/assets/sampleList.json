@@ -1,0 +1,20 @@
+[
+    {
+        "roomId": "2",
+        "usrEmpId": "2",
+        "userName": "New user",
+        "bookingDate": "2019-01-01",
+        "bookingStartTime": "10:08:02",
+        "bookingEndTime": "10:08:02",
+        "purpose": "meeting with client"
+    },
+    {
+        "roomId": "2",
+        "usrEmpId": "3",
+        "userName": "New user 2",
+        "bookingDate": "2019-01-01",
+        "bookingStartTime": "10:08:02",
+        "bookingEndTime": "10:08:02",
+        "purpose": "meeting with client"
+    }
+]

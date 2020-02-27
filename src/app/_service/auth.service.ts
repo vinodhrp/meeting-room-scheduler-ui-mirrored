@@ -18,6 +18,8 @@ export class AuthService {
   //regSuccess = new Subject<boolean>();
   //sessionTimeOut = new Subject<boolean>();
 
+  empId: string;
+
   showMessage:boolean;
 
   showAuthError:boolean;

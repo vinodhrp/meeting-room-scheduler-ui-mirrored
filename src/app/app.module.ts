@@ -27,6 +27,7 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { BookingService } from './_service/booking.service';
 import { MessageService } from './_service/message.service';
 import { ConstantService } from './_service/constant.service';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -61,9 +62,11 @@ import { ConstantService } from './_service/constant.service';
     BookingService,
     MessageService,
     ConstantService,
+    RouterModule,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptService, multi: true },
   ],
   bootstrap: [AppComponent]
+  
 })
 
 export class AppModule { }

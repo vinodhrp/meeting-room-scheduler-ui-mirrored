@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/_service/auth.service';
+import { Booking } from 'src/app/_model/booking.model';
+import { BookingService } from 'src/app/_service/booking.service';
 
 @Component({
   selector: 'app-search-results',
@@ -7,9 +10,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchResultsComponent implements OnInit {
 
-  constructor() { }
+  bookingList: Booking[];
+  userID: string;
+
+  constructor(private authService: AuthService, private bookingService: BookingService) {
+  }
 
   ngOnInit() {
+    this.bookingService.getAllLists().subscribe((data: Booking[]) => {
+      this.bookingList = [...data]
+    })
+  }
+
+  sameUser(empID: string) {
+    this.userID = this.authService.empId;
+    if (this.userID === empID)
+      return true;
+    else
+      return true;
   }
 
 }
