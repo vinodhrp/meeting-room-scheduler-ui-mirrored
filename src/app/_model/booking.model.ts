@@ -4,9 +4,21 @@ export class Booking {
  
     roomId:number;
     usrEmpId:number;
-    userName:string;
-    bookingDate:Date;
-    bookingStarTime:Time;
-    bookingEndTime:Time;
-    purpose:string;
+    userName:String;
+    bookingDate:String;
+    bookingStarTime:String;
+    bookingEndTime:String;
+    purpose:String;
+    
+    //constructor(){}
+
+    constructor(roomId: number, usrEmpId: number,userName: String,bookingDate: String,bookingStartTime: String,bookingEndTime: String,purpose : String) {
+        this.roomId = roomId;
+        this.usrEmpId = usrEmpId;
+        this.userName= userName;
+        this.bookingDate =  bookingDate;
+        this.bookingStarTime = bookingStartTime;
+        this.bookingEndTime = bookingEndTime;
+        this.purpose = purpose;
+     }
 }

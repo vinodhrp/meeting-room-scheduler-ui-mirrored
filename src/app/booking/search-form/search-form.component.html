@@ -1,63 +1,104 @@
-<div class="container register-form">
-    <div role="form" id="quickForm" class="form">
-        <div class="form-content" style="margin-top: 4%;">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Room</label>
-                        <select class="form-control drop" id="sel1">
-                            <option value="0">--All--</option>
-                            <option *ngFor="let room of roomList" value={{room.roomId}}>
-                                {{room.roomName}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Date</label>
-                        <div class="form-group">
-                            <input matInput [min]="minDate" placeholder="m/dd/yyyy" disabled [max]="maxDate"
-                                [matDatepicker]="picker" id="picker">
-                            <mat-datepicker-toggle matSuffix [for]="picker">
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #picker disabled=false></mat-datepicker>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>From Time</label>
-
-                        <div>
-                            <input id="fromTime" #ft [(ngModel)]="fTime" (ngModelChange)="setMinToTime(ft)"
-                                placeholder="From time" min="{{currentTime}}" class="form-control"
-                                [ngxTimepicker]="with5Gap" readonly required>
-                            <ngx-material-timepicker #with5Gap [theme]="blueTheme" [minutesGap]="5">
-                            </ngx-material-timepicker>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>To Time</label>
-                        <div>
-                            <input id="toTime" placeholder="To time" min="{{minToTime}}" class="form-control"
-                                [ngxTimepicker]="with5Gap2" readonly [disabled]=toState required>
-                            <ngx-material-timepicker #with5Gap2 [theme]="blueTheme" [minutesGap]="5">
-                            </ngx-material-timepicker>
-                        </div>
-                    </div>
+<div class="container register-form border border-info" style="margin-top:30px">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default ">
+            <div class="panel-heading">
+                .
+                <div style="float:right; font-size: 80%; position: relative; top:-10px">
                 </div>
             </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-md-4">
+            <div class="panel-heading">
+                <h3 class="panel-title"><strong>Search n Book </strong></h3>
+                <div style="float:right; font-size: 80%; position: relative; top:-10px">
+                </div>
             </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-lg btn-info" (click)="fetchBookedData()">Search</button>
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-lg btn-info" (click)="bookRoom()">Book</button>
-            </div>
-            <div class="col-md-4">
+
+            <div class="panel-body">
+
+                <div role="form" id="quickForm" class="form" aria-autocomplete="none">
+
+                    <div class="alert alert-danger" *ngIf="showError">
+                        <a class="close" data-dismiss="alert" href="#">×</a>{{regErrorMsg}}
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <!-- <span class="text-danger"><strong>* </strong></span><label>Room</label> -->
+                            <select #rId class="form-control drop" id="sel1">
+                                <option value="1">--All--</option>
+                                <option *ngFor="let room of roomList" value={{room.roomId}}>
+                                    {{room.roomName}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <!-- <span class="text-success"><strong>* </strong></span>
+                                <label>Date</label> -->
+
+                                <input matInput [min]="minDate" #dt placeholder="m/dd/yyyy" disabled [max]="maxDate"
+                                    [matDatepicker]="picker" id="picker">
+                                <mat-datepicker-toggle matSuffix [for]="picker">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker disabled=false></mat-datepicker>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <!-- <span class="text-danger"><strong>* </strong></span>
+                            <label>From Time</label> -->
+                            <div>
+                                <input id="fromTime" #ft [(ngModel)]="fTime" (ngModelChange)="setMinToTime(ft)"
+                                    placeholder="From time" min="{{currentTime}}" class="form-control"
+                                    [ngxTimepicker]="with5Gap" readonly required>
+                                <ngx-material-timepicker #with5Gap [theme]="blueTheme" [minutesGap]="5">
+                                </ngx-material-timepicker>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <!-- <span class="text-danger"><strong>* </strong></span>
+                                <label>To Time</label> -->
+                                <div>
+                                    <input id="toTime" #tt placeholder="To time" min="{{minToTime}}"
+                                        class="form-control" [ngxTimepicker]="with5Gap2" readonly [disabled]=toState
+                                        required>
+                                    <ngx-material-timepicker #with5Gap2 [theme]="blueTheme" [minutesGap]="5">
+                                    </ngx-material-timepicker>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <input type="text" #purpose placeholder="Reason" class="form-control" id="purpose" required autocomplete="off"/>
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <span class="text-success"><strong>*</strong> </span><span> mandatory for Search | </span>
+                        <span class="text-danger"><strong>*</strong> </span>
+                        <span class="text-success"><strong>*</strong> </span> mandatory for Book
+
+                    </div> -->
+
+
+                    <div class="input-group">
+                    </div>
+
+                    <button type="submit" class="btn btn-info btn-space"
+                        (click)="fetchBookedData(rId,dt,ft,tt,purpose)">Search</button>
+                    <button type="submit" class="btn btn-info btn-space"
+                        (click)="bookRoom(rId,dt,ft,tt,purpose)">Book</button>
+                    <button type="button" class="btn btn-info btn-space" (click)="reset()">Reset</button>
+
+                </div>
             </div>
         </div>
     </div>

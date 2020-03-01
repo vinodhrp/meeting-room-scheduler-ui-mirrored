@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/_service/auth.service';
 import { Booking } from 'src/app/_model/booking.model';
 import { BookingService } from 'src/app/_service/booking.service';
 
+
 @Component({
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
@@ -12,14 +13,20 @@ export class SearchResultsComponent implements OnInit {
 
   bookingList: Booking[];
   userID: string;
+  searchClick: boolean;
+
 
   constructor(private authService: AuthService, private bookingService: BookingService) {
+
   }
 
   ngOnInit() {
-    this.bookingService.getAllLists().subscribe((data: Booking[]) => {
-      this.bookingList = [...data]
+    this.bookingService.currentMessage.subscribe(data => {
+      console.log('Data in Result Form ' + data);
+      this.bookingList = data;
+      console.log(this.bookingList)
     })
+
   }
 
   sameUser(empID: string) {

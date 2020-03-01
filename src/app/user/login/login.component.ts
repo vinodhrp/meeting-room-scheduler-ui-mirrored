@@ -84,6 +84,11 @@ export class LoginComponent implements OnInit {
   }
 
 
+  reset(){
+    console.log('Reset invoked : ')
+    this.loginForm.reset();
+  }
+
   onSubmit(form: any) {//of Type NgForm
     // this.loginForm.markAllAsTouched();
     this.authService.aunthenticate(this.UserName.value, this.Password.value)
