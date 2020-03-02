@@ -6,7 +6,7 @@ export class Booking {
     usrEmpId:number;
     userName:String;
     bookingDate:String;
-    bookingStarTime:String;
+    bookingStartTime:String;
     bookingEndTime:String;
     purpose:String;
     
@@ -17,7 +17,7 @@ export class Booking {
         this.usrEmpId = usrEmpId;
         this.userName= userName;
         this.bookingDate =  bookingDate;
-        this.bookingStarTime = bookingStartTime;
+        this.bookingStartTime = bookingStartTime;
         this.bookingEndTime = bookingEndTime;
         this.purpose = purpose;
      }
