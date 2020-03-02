@@ -152,7 +152,7 @@ export class SearchFormComponent implements OnInit {
     if (fTime.substr(fTime.length - 2) == "PM") {
       fTime = (parseInt(fTime.substr(0, fTime.indexOf(':'))) + 12) + ":" + parseInt(fTime.substr(fTime.indexOf(':') + 1, 3)) + ":00";
     } else {
-      fTime = toTime.substr(0, fTime.length - 3) + ":00";
+      fTime = fTime.substr(0, fTime.length - 3) + ":00";
     }
 
     if (toTime.substr(toTime.length - 2) == "PM") {
@@ -170,6 +170,14 @@ export class SearchFormComponent implements OnInit {
           if (data.status == 200) {
             this.bookingSuccessMsg = "Booked Successfully !!!";
             this.showSuccess = true;
+            this.service.getAllLists(bookingDetail).subscribe(data => {
+              if (data.length > 0) {
+                this.service.changeMessage(data);
+              } else {
+                this.service.changeMessage([]);
+              }
+        
+            });
           }
         });
     err => {

@@ -26,7 +26,7 @@
                             <!-- <span class="text-danger"><strong>* </strong></span><label>Room</label> -->
                             <select #rId class="form-control drop" id="sel1">
                                 <option value="1">--All--</option>
-                                <option *ngFor="let room of roomList" value={{room.roomId}}>
+                                <option *ngFor="let room of roomList" value={{room.id}}>
                                     {{room.roomName}}
                                 </option>
                             </select>
