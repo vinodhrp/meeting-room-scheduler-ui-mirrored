@@ -14,13 +14,18 @@
 
       <div class="panel-body">
 
+        
+        <div class="nav-link" *ngIf="showMessage">
+            <label>{{message}}</label>
+        </div>
+
 
         <div class="table-responsive">
           <table class="table m-0">
             <thead>
               <tr>
-                <th>Room ID</th>
-                <th>Date</th>
+                <th>Room Name</th>
+                <th>Booked Date</th>
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Booked By</th>
@@ -28,7 +33,7 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody *ngIf="bookingList != null">
+            <tbody *ngIf="bookingList != null && bookingList.length > 0">
               <tr *ngFor="let list of bookingList">
                 <td>{{list.roomId}}</td>
                 <td>{{list.bookingDate}}</td>
@@ -36,12 +41,16 @@
                 <td>{{list.bookingEndTime}}</td>
                 <td>{{list.userName}}</td>
                 <td>{{list.purpose}}</td>
-                <td *ngIf="sameUser(list.usrEmpId)"><a routerLink="#"><span class="badge badge-danger">Cancel</span></a>
+                <td *ngIf="doCancelButtonEnabled(list.usrEmpId)">
+                    <a (click)="cancelBookedRoom(list)"><span class="badge badge-danger">Cancel</span></a>
                 </td>
+                <td *ngIf="!doCancelButtonEnabled(list.usrEmpId)">
+                  <span class="badge badge-info">Cancel</span>
+              </td>
               </tr>
 
-              <tbody *ngIf="bookingList == null">
-                <tr *ngFor="let list of bookingList">
+              <tbody *ngIf="bookingList != null && bookingList.length === 0">
+                <tr>
                   <td colspan="8">No Records Found !!!</td>
                 </tr>
             </tbody>

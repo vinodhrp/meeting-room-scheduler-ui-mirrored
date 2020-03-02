@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { User } from '../_model/user.model';
 
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { RestResponse } from '../_model/rest-response.model';
 import { OAuth } from '../_model/o-auth.model';
 
@@ -21,30 +21,29 @@ export class AuthService {
   empId: string;
 
   showMessage:boolean;
-
   showAuthError:boolean;
 
-  private subject = new Subject<any>();
+  //private subject = new Subject<any>();
 
-  passOnCustomMessage(message: string) {
-    console.log('Event Emitted !!!! in service : ' +message)
-    this.subject.next(message);
-  }
+  // passOnCustomMessage(message: string) {
+  //   console.log('Event Emitted !!!! in service : ' +message)
+  //   this.subject.next(message);
+  // }
 
-  clearMessages() {
-    console.log('Event Cleared !!!! in service : ')
-    this.subject.next();
-  }
+  // clearMessages() {
+  //   console.log('Event Cleared !!!! in service : ')
+  //   this.subject.next();
+  // }
 
-  getCustomMessage(): Observable<any> {
-    return this.subject.asObservable();
-  }
+  // getCustomMessage(): Observable<any> {
+  //   return this.subject.asObservable();
+  // }
 
   constructor(private httpClient: HttpClient, private cons: ConstantService) { }
 
-  register(user: User): Observable<RestResponse> {
+  register(user: User): Observable<HttpResponse<RestResponse>> {
     console.log('Value Of User in ng : ', user);
-    return this.httpClient.post<RestResponse>(this.cons.baseURI + '/openapi/register', user);
+    return this.httpClient.post<RestResponse>(this.cons.baseURI + '/openapi/register', user,{ observe: 'response' });
   }
 
 

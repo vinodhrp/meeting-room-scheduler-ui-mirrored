@@ -3,6 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { Booking } from '../_model/booking.model';
 import { ConstantService } from './constant.service';
+import { RestResponse } from '../_model/rest-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,14 @@ export class BookingService {
       bookingEndTime: booking.bookingEndTime,
       purpose: booking.purpose
     };
+
+    console.log('Booking Values in Service : ' +book);
     return this.http.post<Booking>(this.cons.baseURI + '/meetingroom/bookroom', book, { observe: 'response' });
+  }
+
+
+  cancelBooking(bookId: number):Observable<RestResponse>{
+    return this.http.get<RestResponse>(this.cons.baseURI + '/meetingroom/cancelmeetingroom/'+bookId);
   }
 
 

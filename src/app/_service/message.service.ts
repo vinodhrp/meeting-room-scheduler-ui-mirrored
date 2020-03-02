@@ -6,19 +6,17 @@ import { Subject, Observable } from 'rxjs';
 })
 export class MessageService {
 
-  private subject = new Subject<any>();
+  // private subject = new Subject<any>();
 
-  sendMessage(message: string) {
-    //console.log('In service .... ' +message)
-    this.subject.next(message);
-  }
+  // sendMessage(message: string) {
+  //   this.subject.next(message);
+  // }
 
-  clearMessages() {
-    this.subject.next();
-  }
+  // clearMessages() {
+  //   this.subject.next();
+  // }
 
-  getMessage(): Observable<any> {
-    //console.log('In service .Observable... ' )
-    return this.subject.asObservable();
-  }
+  // getMessage(): Observable<any> {
+  //   return this.subject.asObservable();
+  // }
 }

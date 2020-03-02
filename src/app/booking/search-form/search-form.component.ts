@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { ConstantService } from 'src/app/_service/constant.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorHandlerService } from 'src/app/_service/error-handler.service';
 @Component({
   selector: 'app-search-form',
   templateUrl: './search-form.component.html',
@@ -35,10 +36,12 @@ export class SearchFormComponent implements OnInit {
   showSuccess: boolean;
   fullName: String;
   usrEmpId: number;
+  errorThrown: boolean;
 
 
   constructor(private service: BookingService, private formBuilder: FormBuilder, private roomService: RoomService,
-    private cons: ConstantService,private router:Router,private route:ActivatedRoute) {
+    private cons: ConstantService, private router: Router, private route: ActivatedRoute,
+    private errorHandler: ErrorHandlerService) {
 
     this.searchForm = this.formBuilder.group({});
     const currentYear = new Date().getFullYear();
@@ -78,6 +81,12 @@ export class SearchFormComponent implements OnInit {
     this.roomService.getAllRooms().subscribe(rooms => {
       this.roomList = rooms;
     })
+
+    // this.errorHandler.errorObj.asObservable().subscribe(error => {
+    //   console.log('Errror in Search Form : ' + error); // will return false if http error
+    //   this.errorThrown = error;
+    // });
+
   }
 
 
@@ -118,19 +127,20 @@ export class SearchFormComponent implements OnInit {
 
     console.log('Search Values... : ', +roomId + ' ' + fTime + ' ' + toTime + ' ' + date + ' ' + reason);
     let searchInfo = new Booking(roomId, this.usrEmpId, this.fullName, bookDate, fTime, toTime, reason);
-    this.service.getAllLists(searchInfo).subscribe(data => {
-      console.log('Data : ' + data.length);
-      if (data.length > 0) {
-        this.service.changeMessage(data);
-      } else {
-        this.service.changeMessage([]);
-      }
-
-    });
-
+    this.service.getAllLists(searchInfo).subscribe(
+      data => this.handleSearchData(data),
+      error => this.handleError(error)
+    )
   }
 
-
+  handleSearchData(data:Booking[]){
+    console.log('Data : ' + data.length);
+    if (data.length > 0) {
+      this.service.changeMessage(data);
+    } else {
+      this.service.changeMessage([]);
+    }
+  }
 
   bookRoom(roomId: any, date: any, fTime: any, toTime: any, reason: any) {
     fTime = fTime.value;
@@ -166,33 +176,34 @@ export class SearchFormComponent implements OnInit {
 
     this.service.bookRoom(bookingDetail)
       .subscribe(
-        data => {
-          if (data.status == 200) {
-            this.bookingSuccessMsg = "Booked Successfully !!!";
-            this.showSuccess = true;
-            this.service.getAllLists(bookingDetail).subscribe(data => {
-              if (data.length > 0) {
-                this.service.changeMessage(data);
-              } else {
-                this.service.changeMessage([]);
-              }
-        
-            });
-          }
-        });
-    err => {
-      this.handleError(err);
+        data => this.handleBookedRoomData(data,bookingDetail),
+        err => this.handleError(err) 
+      )
+  }
+
+  handleBookedRoomData(data:any,bookingDetail:Booking){
+    if (data.status == 200) {
+      this.bookingSuccessMsg = "Booked Successfully !!!";
+      this.showSuccess = true;
+      this.service.getAllLists(bookingDetail).subscribe(data => {
+        if (data.length > 0) {
+          this.service.changeMessage(data);
+        } else {
+          this.service.changeMessage([]);
+        }
+
+      });
     }
   }
 
 
   handleError(err: HttpErrorResponse) {
-    console.log('Error in Book/Search........', err)
+    console.log('Error in Book/Search........', JSON.stringify(err));
   }
 
   reset() {
     console.log('reset.............')
-    this.router.navigate(['/booking'],{relativeTo: this.route});
+    this.router.navigate(['/booking'], { relativeTo: this.route });
   }
 
   setMinToTime(minute: HTMLInputElement) {

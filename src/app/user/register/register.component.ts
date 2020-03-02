@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/_service/auth.service';
 import { RestResponse } from 'src/app/_model/rest-response.model';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { MessageService } from 'src/app/_service/message.service';
 
 @Component({
@@ -15,8 +15,8 @@ export class RegisterComponent implements OnInit {
 
   regForm: FormGroup;
   submitted = false;
-  regErrorMsg:String;
-  showError:boolean;
+  regErrorMsg: String;
+  showError: boolean;
 
 
   constructor(private authService: AuthService,
@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
 
 
   ngOnInit() {
-
+    this.showError=false;
     var isLogged = this.authService.isAuthenticated();
     if (isLogged) {
       this.router.navigate(["/booking"]);
@@ -62,29 +62,32 @@ export class RegisterComponent implements OnInit {
 
   }
 
-  private handleRegisterResonse(apiResponse: RestResponse) {
-    console.log('register success..........',apiResponse) ;
-    if (apiResponse.scode === 'OK') {
-      this.sendMessage();
+  private handleRegisterResonse(apiResponse: HttpResponse<RestResponse>) {
+    console.log('register success..........', apiResponse.status);
+    if (apiResponse.status == 201) {
       this.authService.showMessage = true;
       this.router.navigate(["/login"]);
+    } else {
+      this.showError = true;
+      this.regErrorMsg = 'Error In Registration  !!!';
+      this.router.navigate(["/register"]);
     }
   }
 
   sendMessage(): void {
     // send message to subscribers via observable subject
-    this.messageService.sendMessage('Registered Successfully !!!');
-}
+    //this.messageService.sendMessage('Registered Successfully !!!');
+  }
 
   redirectLogin() {
     this.regForm.reset();
     this.router.navigate(["/login"]);
   }
 
-  handleInvalidReg(err:HttpErrorResponse){
+  handleInvalidReg(err: HttpErrorResponse) {
     this.showError = true;
-    this.regErrorMsg = err.error.message +'  !!!';
-    console.log('err ' +err);
+    this.regErrorMsg = err.error.message + '  !!!';
+    console.log('err ' + err);
     this.router.navigate(["/register"]);
   }
 
