@@ -1,11 +1,16 @@
-<div class="container register-form border border-info" style="margin-top:30px">
+<div class="container register-form border border-info" style="margin-top:30px"><br>
+    <div class="alert alert-danger" *ngIf="errorMsg">
+        <a class="close" data-dismiss="alert" href="#"></a>{{errorMsg}}
+    </div>
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default ">
+
             <div class="panel-heading">
-                .
+
                 <div style="float:right; font-size: 80%; position: relative; top:-10px">
                 </div>
             </div>
+
             <div class="panel-heading">
                 <h3 class="panel-title"><strong>Search n Book </strong></h3>
                 <div style="float:right; font-size: 80%; position: relative; top:-10px">
@@ -23,6 +28,18 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-6">
+
+                            <div class="form-group">
+
+                                <span class="text-danger"><strong>* </strong></span>
+                                <select #rId class="form-control drop" id="sel1">
+                                    <option value="0">--All--</option>
+                                    <option *ngFor="let room of roomList" value={{room.id}}>
+                                        {{room.roomName}}
+                                    </option>
+                                </select>
+                            </div>
+
                             <!-- <span class="text-danger"><strong>* </strong></span><label>Room</label> -->
                             <select #rId class="form-control drop" id="sel1">
                                 <option value="0">--All--</option>
@@ -30,14 +47,14 @@
                                     {{room.roomName}}
                                 </option>
                             </select>
+
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6">
                             <div class="form-group">
-                                <!-- <span class="text-success"><strong>* </strong></span>
-                                <label>Date</label> -->
-
-                                <input matInput [min]="minDate" #dt placeholder="m/dd/yyyy" disabled [max]="maxDate"
-                                    [matDatepicker]="picker" id="picker">
+                                <span class="text-success"><strong>* </strong></span>
+                                <br>
+                                <input matInput [min]="minDate" [(ngModel)]="cDate" (ngModelChange)="calculateDate(dt)"
+                                    #dt placeholder="m/dd/yyyy" disabled [max]="maxDate" [matDatepicker]="picker">
                                 <mat-datepicker-toggle matSuffix [for]="picker">
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #picker disabled=false></mat-datepicker>
@@ -51,20 +68,18 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-6">
-                            <!-- <span class="text-danger"><strong>* </strong></span>
-                            <label>From Time</label> -->
+                            <span class="text-danger"><strong>* </strong></span>
                             <div>
                                 <input id="fromTime" #ft [(ngModel)]="fTime" (ngModelChange)="setMinToTime(ft)"
                                     placeholder="From time" min="{{currentTime}}" class="form-control"
-                                    [ngxTimepicker]="with5Gap" readonly required>
-                                <ngx-material-timepicker #with5Gap [theme]="blueTheme" [minutesGap]="5">
+                                    [ngxTimepicker]="with5Gap" readonly [disabled]=fromState required>
+                                <ngx-material-timepicker #with5Gap id="fvalue" [minutesGap]="5">
                                 </ngx-material-timepicker>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6">
                             <div class="form-group">
-                                <!-- <span class="text-danger"><strong>* </strong></span>
-                                <label>To Time</label> -->
+                                <span class="text-danger"><strong>* </strong></span>
                                 <div>
                                     <input id="toTime" #tt placeholder="To time" min="{{minToTime}}"
                                         class="form-control" [ngxTimepicker]="with5Gap2" readonly [disabled]=toState
@@ -78,15 +93,16 @@
 
 
                     <div class="form-group">
-                        <input type="text" #purpose placeholder="Reason" class="form-control" id="purpose" required autocomplete="off"/>
+                        <input type="text" #purpose placeholder="Reason" class="form-control" id="purpose" required
+                            autocomplete="off" />
                     </div>
 
-                    <!-- <div class="form-group">
+                    <div class="form-group">
                         <span class="text-success"><strong>*</strong> </span><span> mandatory for Search | </span>
                         <span class="text-danger"><strong>*</strong> </span>
                         <span class="text-success"><strong>*</strong> </span> mandatory for Book
 
-                    </div> -->
+                    </div>
 
 
                     <div class="input-group">

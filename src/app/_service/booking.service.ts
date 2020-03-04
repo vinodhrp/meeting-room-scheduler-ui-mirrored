@@ -47,6 +47,9 @@ export class BookingService {
       bookingEndTime: booking.bookingEndTime,
       purpose: booking.purpose
     };
+    console.log(book.roomId,book.usrEmpId,book.bookingDate,book.bookingStarTime,book.bookingEndTime,book.purpose);
+    return this.http.post<Booking>(this.cons.baseURI + '/meetingroom/bookroom', book, { observe: 'response' });
+
 
     console.log('Booking Values in Service : ' +book);
     return this.http.post<Booking>(this.cons.baseURI + this.cons.bookRoom, book, { observe: 'response' });
