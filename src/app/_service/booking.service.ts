@@ -30,7 +30,7 @@ export class BookingService {
     const search = {
       roomId: searchInfo.roomId,
       bookingDate: searchInfo.bookingDate,
-      bookingStarTime: searchInfo.bookingStarTime,
+      bookingStartTime: searchInfo.bookingStarTime,
       bookingEndTime: searchInfo.bookingEndTime
     };
     return this.http.post<Booking[]>(this.cons.baseURI + '/meetingroom/searchroom', search);
@@ -46,6 +46,7 @@ export class BookingService {
       bookingEndTime: booking.bookingEndTime,
       purpose: booking.purpose
     };
+    console.log(book.roomId,book.usrEmpId,book.bookingDate,book.bookingStarTime,book.bookingEndTime,book.purpose);
     return this.http.post<Booking>(this.cons.baseURI + '/meetingroom/bookroom', book, { observe: 'response' });
   }
 
