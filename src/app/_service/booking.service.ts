@@ -34,7 +34,7 @@ export class BookingService {
       bookingStartTime: searchInfo.bookingStartTime,
       bookingEndTime: searchInfo.bookingEndTime
     };
-    return this.http.post<Booking[]>(this.cons.baseURI + '/meetingroom/searchroom', search);
+    return this.http.post<Booking[]>(this.cons.baseURI + this.cons.searchRoom, search);
   }
 
 
@@ -49,12 +49,12 @@ export class BookingService {
     };
 
     console.log('Booking Values in Service : ' +book);
-    return this.http.post<Booking>(this.cons.baseURI + '/meetingroom/bookroom', book, { observe: 'response' });
+    return this.http.post<Booking>(this.cons.baseURI + this.cons.bookRoom, book, { observe: 'response' });
   }
 
 
   cancelBooking(bookId: number):Observable<RestResponse>{
-    return this.http.get<RestResponse>(this.cons.baseURI + '/meetingroom/cancelmeetingroom/'+bookId);
+    return this.http.get<RestResponse>(this.cons.baseURI + this.cons.cancelRoom +'/'+bookId);
   }
 
 

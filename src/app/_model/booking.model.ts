@@ -12,6 +12,9 @@ export class Booking {
     
     //constructor(){}
 
+    bookingId?:number;
+    roomName?:string;
+
     constructor(roomId: number, usrEmpId: number,userName: String,bookingDate: String,bookingStartTime: String,bookingEndTime: String,purpose : String) {
         this.roomId = roomId;
         this.usrEmpId = usrEmpId;

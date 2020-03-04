@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/_service/auth.service';
 import { RestResponse } from 'src/app/_model/rest-response.model';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { MessageService } from 'src/app/_service/message.service';
 
 @Component({
   selector: 'app-register',
@@ -20,12 +19,11 @@ export class RegisterComponent implements OnInit {
 
 
   constructor(private authService: AuthService,
-    private router: Router, private formBuilder: FormBuilder,
-    private messageService: MessageService) { }
+    private router: Router, private formBuilder: FormBuilder) { }
 
 
   ngOnInit() {
-    this.showError=false;
+    this.showError = false;
     var isLogged = this.authService.isAuthenticated();
     if (isLogged) {
       this.router.navigate(["/booking"]);
@@ -72,11 +70,6 @@ export class RegisterComponent implements OnInit {
       this.regErrorMsg = 'Error In Registration  !!!';
       this.router.navigate(["/register"]);
     }
-  }
-
-  sendMessage(): void {
-    // send message to subscribers via observable subject
-    //this.messageService.sendMessage('Registered Successfully !!!');
   }
 
   redirectLogin() {
