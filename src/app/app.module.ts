@@ -24,6 +24,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { BookingService } from './_service/booking.service';
 import { ConstantService } from './_service/constant.service';
 import { RouterModule } from '@angular/router';
+import { BottomNavigationComponent } from './bottom-navigation/bottom-navigation.component';
 
 
 
@@ -37,7 +38,8 @@ import { RouterModule } from '@angular/router';
     SearchResultsComponent,
     NavbarComponent,
     TopNavigationComponent,
-    LeftNavigationComponent
+    LeftNavigationComponent,
+    BottomNavigationComponent
   ],
   imports: [
     BrowserModule,

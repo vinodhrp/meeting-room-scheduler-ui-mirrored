@@ -79,7 +79,7 @@ export class RegisterComponent implements OnInit {
 
   handleInvalidReg(err: HttpErrorResponse) {
     this.showError = true;
-    this.regErrorMsg = err.error.message + '  !!!';
+    this.regErrorMsg = err.message + '  !!!';
     console.log('err ' + err);
     this.router.navigate(["/register"]);
   }

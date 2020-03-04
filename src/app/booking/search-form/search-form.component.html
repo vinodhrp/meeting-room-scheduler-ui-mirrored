@@ -1,18 +1,25 @@
 <div class="container register-form border border-info" style="margin-top:30px"><br>
+
+
     <div class="alert alert-danger" *ngIf="errorMsg">
         <a class="close" data-dismiss="alert" href="#"></a>{{errorMsg}}
     </div>
-    <div class="col-md-10 col-md-offset-1">
+
+    <div class="alert alert-success" *ngIf="successMsg">
+        <a class="close" data-dismiss="alert" href="#"></a>{{successMsg}}
+    </div>
+
+    <!-- <div class="col-md-10 col-md-offset-1"> -->
         <div class="panel panel-default ">
 
             <div class="panel-heading">
-
                 <div style="float:right; font-size: 80%; position: relative; top:-10px">
                 </div>
             </div>
 
             <div class="panel-heading">
                 <h3 class="panel-title"><strong>Search n Book </strong></h3>
+                <hr>
                 <div style="float:right; font-size: 80%; position: relative; top:-10px">
                 </div>
             </div>
@@ -21,9 +28,9 @@
 
                 <div role="form" id="quickForm" class="form" aria-autocomplete="none">
 
-                    <div class="alert alert-danger" *ngIf="showError">
+                    <!-- <div class="alert alert-danger" *ngIf="showError">
                         <a class="close" data-dismiss="alert" href="#">×</a>{{regErrorMsg}}
-                    </div>
+                    </div> -->
 
 
                     <div class="row">
@@ -41,12 +48,12 @@
                             </div>
 
                             <!-- <span class="text-danger"><strong>* </strong></span><label>Room</label> -->
-                            <select #rId class="form-control drop" id="sel1">
+                            <!-- <select #rId class="form-control drop" id="sel1">
                                 <option value="0">--All--</option>
                                 <option *ngFor="let room of roomList" value={{room.id}}>
                                     {{room.roomName}}
                                 </option>
-                            </select>
+                            </select> -->
 
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6">
@@ -118,4 +125,4 @@
             </div>
         </div>
     </div>
-</div>
+<!-- </div> -->

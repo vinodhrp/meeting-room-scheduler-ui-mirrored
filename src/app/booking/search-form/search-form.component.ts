@@ -43,6 +43,7 @@ export class SearchFormComponent implements OnInit {
   bookingForm: FormGroup;
   formFieldValues: Booking;
   errorMsg: any;
+  successMsg:any;
 
   @ViewChild('ft', { static: true }) FT: ElementRef;
   @ViewChild('tt', { static: true }) TT: ElementRef;
@@ -116,14 +117,15 @@ export class SearchFormComponent implements OnInit {
     }
   }
 
-  calculateTime(time) {
+  calculateTime(time):string {
     if (time.length > 0) {
       if (time.substr(time.length - 2) == "PM") {
         if (time.substr(0, time.indexOf(":")) != "12") {
-          this.fTime = (12 + parseInt(time.substr(0, time.indexOf(':')))) + ":" + time.substr(time.indexOf(':') + 1, 2) + ":00"
+         // this.fTime = (12 + parseInt(time.substr(0, time.indexOf(':')))) + ":" + time.substr(time.indexOf(':') + 1, 2) + ":00"
+          return time = (12 + parseInt(time.substr(0, time.indexOf(':')))) + ":" + time.substr(time.indexOf(':') + 1, 2) + ":00"
         }
         else {
-          this.fTime = time.substr(0, time.length - 3) + ":00"
+          return time = time.substr(0, time.length - 3) + ":00"
         }
       } else {
         if (time.substr(0, time.indexOf(':')).length === 2) {
@@ -135,33 +137,42 @@ export class SearchFormComponent implements OnInit {
       }
     }
   }
+
+
+
   fetchBookedData(roomId: any, date: any, fTime: any, toTime: any, reason: any) {
+    this.errorMsg ='';
+    this.successMsg = '';
     fTime = fTime.value;
     toTime = toTime.value;
     date = date.value;
     reason = reason.value;
     roomId = roomId.value;
-    if (date == "") {
-      this.errorMsg = "Date is mandatory";
+    //if (date == "") {
+    //  this.errorMsg = "Date is mandatory";
 
-    }
-    else {
+    //}
+    //else {
       this.errorMsg = "";
       let asim = new DateTimeFormatPipe(date);
       var bookDate = asim.transform(date);
-      this.fTime = this.calculateTime(fTime);
-      this.toTime = this.calculateTime(toTime);
+      fTime = this.calculateTime(fTime);
+      toTime = this.calculateTime(toTime);
 
-      console.log('Search Values... : ', +roomId + ' ' + this.fTime + ' ' + this.toTime + ' ' + date + ' ' + reason);
+      console.log('Search Values... : ', +roomId + ' ' + fTime + ' ' + toTime + ' ' + date + ' ' + reason);
       let searchInfo = new Booking(roomId, this.usrEmpId, this.fullName, bookDate, fTime, toTime, reason);
       this.service.getAllLists(searchInfo).subscribe(
         data => this.handleSearchData(data),
         error => this.handleError(error)
       )
-    }
+    //}
   }
-  
-  
+
+
+
+
+
+
   handleSearchData(data: Booking[]) {
     console.log('Data : ' + data.length);
     if (data.length > 0) {
@@ -172,33 +183,28 @@ export class SearchFormComponent implements OnInit {
   }
 
 
-   handleSearchData(data:Booking[]){
-    console.log('Data : ' + data.length);
-    if (data.length > 0) {
-      this.service.changeMessage(data);
-    } else {
-      this.service.changeMessage([]);
-    }
-  }
+
 
   bookRoom(roomId: any, date: any, fTime: any, toTime: any, reason: any) {
+    this.errorMsg ='';
+    this.successMsg = '';
     fTime = fTime.value;
     toTime = toTime.value;
     date = date.value;
     reason = reason.value;
     roomId = roomId.value;
-    if (fTime == "" || toTime == "" || date == "" || roomId == "") {
+    if (fTime == "" || toTime == "" || date == "" || roomId == "0") {
       this.errorMsg = "All Fields are mandatory";
     }
     else {
       this.errorMsg = "";
       let asim = new DateTimeFormatPipe(date);
       var bookDate = asim.transform(date);
+      fTime = this.calculateTime(fTime);
+      toTime = this.calculateTime(toTime);
 
-      this.fTime = this.calculateTime(fTime);
-      this.toTime = this.calculateTime(toTime);
       console.log('Booking Values... : ', +roomId + ' ' + fTime + ' ' + toTime + ' ' + date + ' ' + reason);
-      let bookingDetail = new Booking(roomId, this.usrEmpId, this.fullName, bookDate, this.fTime, this.toTime, reason);
+      let bookingDetail = new Booking(roomId, this.usrEmpId, this.fullName, bookDate, fTime, toTime, reason);
 
       this.service.bookRoom(bookingDetail)
         .subscribe(
@@ -206,37 +212,17 @@ export class SearchFormComponent implements OnInit {
           err => this.handleError(err)
         )
 
-    let asim = new DateTimeFormatPipe(date);
-    var bookDate = asim.transform(date);
 
-    if (fTime.substr(fTime.length - 2) == "PM") {
-      fTime = (parseInt(fTime.substr(0, fTime.indexOf(':'))) + 12) + ":" + parseInt(fTime.substr(fTime.indexOf(':') + 1, 3)) + ":00";
-    } else {
-      fTime = fTime.substr(0, fTime.length - 3) + ":00";
     }
   }
+
+
 
   handleBookedRoomData(data: any, bookingDetail: Booking) {
-    if (toTime.substr(toTime.length - 2) == "PM") {
-      toTime = (parseInt(toTime.substr(0, toTime.indexOf(':'))) + 12) + ":" + parseInt(toTime.substr(toTime.indexOf(':') + 1, 3)) + ":00";
-    } else {
-      console.log("TO TIME " + toTime);
-      toTime = toTime.substr(0, toTime.length - 3) + ":00";
-    }
-    console.log('Booking Values... : ', +roomId + ' ' + fTime + ' ' + toTime + ' ' + date + ' ' + reason);
-    let bookingDetail = new Booking(roomId, this.usrEmpId, this.fullName, bookDate, fTime, toTime, reason);
-
-    this.service.bookRoom(bookingDetail)
-      .subscribe(
-        data => this.handleBookedRoomData(data,bookingDetail),
-        err => this.handleError(err) 
-      )
-  }
-
-  handleBookedRoomData(data:any,bookingDetail:Booking){
     if (data.status == 200) {
       this.bookingSuccessMsg = "Booked Successfully !!!";
       this.showSuccess = true;
+      this.successMsg = data.message ? data.message : this.bookingSuccessMsg
       this.service.getAllLists(bookingDetail).subscribe(data => {
         if (data.length > 0) {
           this.service.changeMessage(data);
@@ -250,16 +236,22 @@ export class SearchFormComponent implements OnInit {
 
 
   handleError(err: HttpErrorResponse) {
+    this.errorMsg ='';
+    this.successMsg = '';
     console.log('Error in Book/Search........', JSON.stringify(err));
+    console.log('Error Message : ', err.message);
+    this.errorMsg = err.message ? err.message  : 'Something went wrong';
   }
 
   reset() {
     console.log('reset.............')
-    this.FT.nativeElement.value = "";
-    this.TT.nativeElement.value = "";
-    this.DATE.nativeElement.value = "";
-    this.PURPOSE.nativeElement.value = "";    
-    this.router.navigate(['/booking'], { relativeTo: this.route });
+    window.location.reload();
+    // this.errorMsg ='';
+    // this.FT.nativeElement.value = "";
+    // this.TT.nativeElement.value = "";
+    // this.DATE.nativeElement.value = "";
+    // this.PURPOSE.nativeElement.value = "";
+    // this.router.navigate(['/booking'], { relativeTo: this.route });
   }
 
   setMinToTime(minute: HTMLInputElement) {

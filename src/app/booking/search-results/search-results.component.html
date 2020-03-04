@@ -1,62 +1,59 @@
-<div class="container register-form border border-info" style="margin-top:30px">
-  <div class="col-md-10 col-md-offset-1">
-      <div class="panel panel-default ">
-          <div class="panel-heading">
-              .
-              <div style="float:right; font-size: 80%; position: relative; top:-10px">
-              </div>
-          </div>
-          <div class="panel-heading">
-              <h3 class="panel-title"><strong>Booked Details </strong></h3>
-              <div style="float:right; font-size: 80%; position: relative; top:-10px">
-              </div>
-          </div>
+<div class="container register-form border border-info" style="margin-top:30px;margin-bottom:30px">
 
-      <div class="panel-body">
+  <div class="alert alert-danger" *ngIf="errorMsg">
+    <a class="close" data-dismiss="alert" href="#"></a>{{errorMsg}}
+  </div>
 
-        
-        <div class="nav-link" *ngIf="showMessage">
-            <label>{{message}}</label>
-        </div>
+  <div class="alert alert-success" *ngIf="successMsg">
+    <a class="close" data-dismiss="alert" href="#"></a>{{successMsg}}
+  </div>
+
+  <div class="panel panel-default ">
 
 
-        <div class="table-responsive">
-          <table class="table m-0">
-            <thead>
-              <tr>
-                <th>Room Name</th>
-                <th>Booked Date</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Booked By</th>
-                <th>Purpose</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody *ngIf="bookingList != null && bookingList.length > 0">
-              <tr *ngFor="let list of bookingList">
-                <td>{{list.roomName}}</td>
-                <td>{{list.bookingDate}}</td>
-                <td>{{list.bookingStartTime}}</td>
-                <td>{{list.bookingEndTime}}</td>
-                <td>{{list.userName}}</td>
-                <td>{{list.purpose}}</td>
-                <td *ngIf="doCancelButtonEnabled(list.usrEmpId)">
-                    <a (click)="cancelBookedRoom(list)"><span class="badge badge-danger">Cancel</span></a>
-                </td>
-                <td *ngIf="!doCancelButtonEnabled(list.usrEmpId)">
-                  <span class="badge badge-info">Cancel</span>
-              </td>
-              </tr>
-
-              <tbody *ngIf="bookingList != null && bookingList.length === 0">
-                <tr>
-                  <td colspan="8">No Records Found !!!</td>
-                </tr>
-            </tbody>
-          </table>
-        </div>
+    <div class="panel-heading">
+      <div style="float:right; font-size: 80%; position: relative; top:-10px">
       </div>
     </div>
+    <div class="panel-heading">
+      <h3 class="panel-title title-space"><strong>Booked Details </strong></h3>
+      <hr>
+      <div style="float:right; font-size: 80%; position: relative; top:-10px">
+      </div>
+    </div>
+    <table class="table table-striped table-responsive-md">
+      <thead>
+        <tr>
+          <th>Room Name</th>
+          <th>Booked Date</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Booked By</th>
+          <th>Purpose</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="bookingList != null && bookingList.length > 0">
+        <tr *ngFor="let list of bookingList">
+          <td>{{list.roomName}}</td>
+          <td>{{list.bookingDate | date:'mediumDate'}}</td>
+          <td>{{list.bookingStartTime}}</td>
+          <td>{{list.bookingEndTime}}</td>
+          <td>{{list.userName}}</td>
+          <td>{{list.purpose}}</td>
+          <td *ngIf="doCancelButtonEnabled(list.usrEmpId)">
+            <a (click)="cancelBookedRoom(list)"><span class="btn btn-danger btn-sm">Cancel</span></a>
+          </td>
+          <td *ngIf="!doCancelButtonEnabled(list.usrEmpId)">
+            <span class="btn btn-warn btn-sm">Cancel</span>
+          </td>
+        </tr>
+
+      <tbody *ngIf="bookingList != null && bookingList.length === 0">
+        <tr>
+          <td colspan="8">No Records Found !!!</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
