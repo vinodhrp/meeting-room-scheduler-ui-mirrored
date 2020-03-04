@@ -27,18 +27,18 @@ export class SearchResultsComponent implements OnInit {
 
   ngOnInit() {
     this.bookingService.currentMessage.subscribe(data => {
-      console.log('Data in Result Form ' + data);
+      //console.log('Data in Result Form ' + data);
       this.bookingList = data;
-      console.log(this.bookingList)
+      console.log('Search Results in Result Panel : ' + this.bookingList)
     })
 
   }
 
   cancelBookedRoom(booking:Booking){
-    console.log('Cancel Booking For : ' +booking);
     //if(booking.)
-    var bookID = 18;
-    this.bookingService.cancelBooking(Number(bookID)).subscribe(
+    var bookID = booking.bookingId;//19;
+    console.log('Cancel Booking with ID  : ' +bookID);
+    this.bookingService. cancelBooking(Number(bookID)).subscribe(
       data => this.handleCanceledData(data),
       err=>this.handleError(err)
     )
@@ -47,6 +47,7 @@ export class SearchResultsComponent implements OnInit {
 
   handleCanceledData(data:any){
     console.log('Cancelled Success : ' +JSON.stringify(data))
+    this.bookingList = [];
   }
 
 

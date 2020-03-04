@@ -22,7 +22,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { BookingService } from './_service/booking.service';
-import { MessageService } from './_service/message.service';
 import { ConstantService } from './_service/constant.service';
 import { RouterModule } from '@angular/router';
 
@@ -57,7 +56,6 @@ import { RouterModule } from '@angular/router';
   providers: [
     AuthService,
     BookingService,
-    MessageService,
     ConstantService,
     RouterModule,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptService, multi: true },

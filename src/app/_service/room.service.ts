@@ -10,7 +10,7 @@ import { ConstantService } from './constant.service';
 export class RoomService {
 
   //For testing
-  jsonURL: string = 'assets/roomList.json';
+  //jsonURL: string = 'assets/roomList.json';
 
 
 
@@ -18,7 +18,8 @@ export class RoomService {
     private cons: ConstantService) { }
 
   getAllRooms(): Observable<Room[]> {
-    ///return this.http.get<Room>(this.jsonURL);
-    return this.http.get<Room[]>(this.cons.baseURI + '/roominfo/rooms/')
+    return this.http.get<Room[]>(this.cons.baseURI + this.cons.fetchRooms);
   }
+
+
 }

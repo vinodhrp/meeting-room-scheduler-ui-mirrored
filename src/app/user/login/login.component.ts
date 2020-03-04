@@ -7,7 +7,6 @@ import { OAuth } from 'src/app/_model/o-auth.model';
 import { Login } from 'src/app/_model/login';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { MessageService } from 'src/app/_service/message.service';
 
 @Component({
   selector: 'app-login',
@@ -32,8 +31,7 @@ export class LoginComponent implements OnInit {
 
 
   constructor(private authService: AuthService,
-    private router: Router,
-    private messageService: MessageService) {
+    private router: Router) {
     console.log('Login Constructor.....')
     this.getCustomMessage();
 
@@ -41,6 +39,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('Login Onnit.....')
+    //this.showError=false;
+    //this.showSuccess=false;
     var isLogged = this.authService.isAuthenticated();
     if (isLogged) {
       this.router.navigate(["/booking"]);
@@ -63,18 +63,6 @@ export class LoginComponent implements OnInit {
       this.authService.showAuthError = false;
       return;
     }
-
-    this.subscription = this.messageService.getMessage().subscribe(message => {
-      console.log('Messages in Login Init : 1 ' + this.regSuccessMsg)
-      if (message) {
-        this.regSuccessMsg = message;
-        this.showSuccess = true;
-        console.log('Messages in Login Init : 2 ' + this.regSuccessMsg)
-      } else {
-        // clear messages when empty message received
-        this.regSuccessMsg = '';
-      }
-    });
   }
 
   onSubmit1(heroForm): void {
@@ -91,6 +79,8 @@ export class LoginComponent implements OnInit {
 
   onSubmit(form: any) {//of Type NgForm
     // this.loginForm.markAllAsTouched();
+    this.showError=false;
+    this.showSuccess=false;
     this.authService.aunthenticate(this.UserName.value, this.Password.value)
       .subscribe(
         data => (this.redirecToDashBoard(data)),
@@ -131,11 +121,5 @@ export class LoginComponent implements OnInit {
   }
 
 
-
-  // ngOnDestroy() {
-  //   // unsubscribe to ensure no memory leaks
-  //   //this.showSuccess = false;
-  //   //this.messageService.clearMessages();
-  //}
 
 }

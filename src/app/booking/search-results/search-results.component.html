@@ -35,7 +35,7 @@
             </thead>
             <tbody *ngIf="bookingList != null && bookingList.length > 0">
               <tr *ngFor="let list of bookingList">
-                <td>{{list.roomId}}</td>
+                <td>{{list.roomName}}</td>
                 <td>{{list.bookingDate}}</td>
                 <td>{{list.bookingStartTime}}</td>
                 <td>{{list.bookingEndTime}}</td>

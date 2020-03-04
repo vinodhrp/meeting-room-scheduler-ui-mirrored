@@ -52,6 +52,7 @@ export class SearchFormComponent implements OnInit {
 
 
 
+
   constructor(private service: BookingService, private formBuilder: FormBuilder, private roomService: RoomService,
     private cons: ConstantService, private router: Router, private route: ActivatedRoute,
     private errorHandler: ErrorHandlerService) {
@@ -74,6 +75,12 @@ export class SearchFormComponent implements OnInit {
     this.roomService.getAllRooms().subscribe(rooms => {
       this.roomList = rooms;
     })
+
+    // this.errorHandler.errorObj.asObservable().subscribe(error => {
+    //   console.log('Errror in Search Form : ' + error); // will return false if http error
+    //   this.errorThrown = error;
+    // });
+
   }
 
   calculateDate(date) {
@@ -153,7 +160,19 @@ export class SearchFormComponent implements OnInit {
       )
     }
   }
+  
+  
   handleSearchData(data: Booking[]) {
+    console.log('Data : ' + data.length);
+    if (data.length > 0) {
+      this.service.changeMessage(data);
+    } else {
+      this.service.changeMessage([]);
+    }
+  }
+
+
+   handleSearchData(data:Booking[]){
     console.log('Data : ' + data.length);
     if (data.length > 0) {
       this.service.changeMessage(data);
@@ -186,10 +205,35 @@ export class SearchFormComponent implements OnInit {
           data => this.handleBookedRoomData(data, bookingDetail),
           err => this.handleError(err)
         )
+
+    let asim = new DateTimeFormatPipe(date);
+    var bookDate = asim.transform(date);
+
+    if (fTime.substr(fTime.length - 2) == "PM") {
+      fTime = (parseInt(fTime.substr(0, fTime.indexOf(':'))) + 12) + ":" + parseInt(fTime.substr(fTime.indexOf(':') + 1, 3)) + ":00";
+    } else {
+      fTime = fTime.substr(0, fTime.length - 3) + ":00";
     }
   }
 
   handleBookedRoomData(data: any, bookingDetail: Booking) {
+    if (toTime.substr(toTime.length - 2) == "PM") {
+      toTime = (parseInt(toTime.substr(0, toTime.indexOf(':'))) + 12) + ":" + parseInt(toTime.substr(toTime.indexOf(':') + 1, 3)) + ":00";
+    } else {
+      console.log("TO TIME " + toTime);
+      toTime = toTime.substr(0, toTime.length - 3) + ":00";
+    }
+    console.log('Booking Values... : ', +roomId + ' ' + fTime + ' ' + toTime + ' ' + date + ' ' + reason);
+    let bookingDetail = new Booking(roomId, this.usrEmpId, this.fullName, bookDate, fTime, toTime, reason);
+
+    this.service.bookRoom(bookingDetail)
+      .subscribe(
+        data => this.handleBookedRoomData(data,bookingDetail),
+        err => this.handleError(err) 
+      )
+  }
+
+  handleBookedRoomData(data:any,bookingDetail:Booking){
     if (data.status == 200) {
       this.bookingSuccessMsg = "Booked Successfully !!!";
       this.showSuccess = true;

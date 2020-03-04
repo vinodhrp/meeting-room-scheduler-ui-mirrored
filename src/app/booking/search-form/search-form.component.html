@@ -28,6 +28,7 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-6">
+
                             <div class="form-group">
 
                                 <span class="text-danger"><strong>* </strong></span>
@@ -38,6 +39,15 @@
                                     </option>
                                 </select>
                             </div>
+
+                            <!-- <span class="text-danger"><strong>* </strong></span><label>Room</label> -->
+                            <select #rId class="form-control drop" id="sel1">
+                                <option value="0">--All--</option>
+                                <option *ngFor="let room of roomList" value={{room.id}}>
+                                    {{room.roomName}}
+                                </option>
+                            </select>
+
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6">
                             <div class="form-group">

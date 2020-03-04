@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { User } from '../_model/user.model';
 
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { RestResponse } from '../_model/rest-response.model';
 import { OAuth } from '../_model/o-auth.model';
 
@@ -21,30 +21,13 @@ export class AuthService {
   empId: string;
 
   showMessage:boolean;
-
   showAuthError:boolean;
-
-  private subject = new Subject<any>();
-
-  passOnCustomMessage(message: string) {
-    console.log('Event Emitted !!!! in service : ' +message)
-    this.subject.next(message);
-  }
-
-  clearMessages() {
-    console.log('Event Cleared !!!! in service : ')
-    this.subject.next();
-  }
-
-  getCustomMessage(): Observable<any> {
-    return this.subject.asObservable();
-  }
 
   constructor(private httpClient: HttpClient, private cons: ConstantService) { }
 
-  register(user: User): Observable<RestResponse> {
+  register(user: User): Observable<HttpResponse<RestResponse>> {
     console.log('Value Of User in ng : ', user);
-    return this.httpClient.post<RestResponse>(this.cons.baseURI + '/openapi/register', user);
+    return this.httpClient.post<RestResponse>(this.cons.baseURI + this.cons.register, user,{ observe: 'response' });
   }
 
 
@@ -60,12 +43,12 @@ export class AuthService {
     }
     console.log('Req Header : ', headers);
     console.log('Req Body : ', body);
-    return this.httpClient.post<OAuth>(this.cons.baseURI + '/oauth/token', body, { headers })
+    return this.httpClient.post<OAuth>(this.cons.baseURI + this.cons.token, body, { headers })
       .pipe(tap(token => this.saveAuthDetailsToStorage(token, username)));
   }
 
   getUser(empId: String): Observable<User> {
-    return this.httpClient.get<User>(this.cons.baseURI + '/userprofile/fetchuser/' + empId);
+    return this.httpClient.get<User>(this.cons.baseURI + this.cons.fetchSingleUser +'/'+ empId);
   }
 
   private saveAuthDetailsToStorage(token: OAuth, username: string) {
