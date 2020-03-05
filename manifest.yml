@@ -1,6 +1,6 @@
 
 applications:
-- name: cts-rabo-glassroom
+- name: glassdoor-room
   memory: 512M
   disk_quota: 1024M
   instances: 1
