@@ -1,6 +1,6 @@
 
 applications:
-- name: glassdoor-room
+- name: cts-rabo-glassroom
   memory: 512M
   disk_quota: 1024M
   path: dist/meeting-room-scheduler-ui/
