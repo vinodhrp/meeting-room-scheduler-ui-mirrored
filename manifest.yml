@@ -3,6 +3,7 @@ applications:
 - name: glassdoor-room
   memory: 512M
   disk_quota: 1024M
+  path: dist/meeting-room-scheduler-ui/
   instances: 1
   buildpacks:
     - staticfile_buildpack
