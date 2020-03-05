@@ -26,6 +26,7 @@ import { ConstantService } from './_service/constant.service';
 import { RouterModule } from '@angular/router';
 import { BottomNavigationComponent } from './bottom-navigation/bottom-navigation.component';
 import { DateTimeFormatPipe } from './date-time-format-pipe';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 
 
@@ -41,7 +42,7 @@ import { DateTimeFormatPipe } from './date-time-format-pipe';
     TopNavigationComponent,
     LeftNavigationComponent,
     BottomNavigationComponent,
-    DateTimeFormatPipe
+    DateTimeFormatPipe,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +64,8 @@ import { DateTimeFormatPipe } from './date-time-format-pipe';
     ConstantService,
     RouterModule,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptService, multi: true },
+    {provide : LocationStrategy , useClass: HashLocationStrategy}
+    
   ],
   bootstrap: [AppComponent]
 
