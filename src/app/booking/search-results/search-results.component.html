@@ -36,7 +36,7 @@
       <tbody *ngIf="bookingList != null && bookingList.length > 0">
         <tr *ngFor="let list of bookingList">
           <td>{{list.roomName}}</td>
-          <td>{{list.bookingDate | date:'mediumDate'}}</td>
+          <td>{{list.bookingDate}}</td>
           <td>{{list.bookingStartTime}}</td>
           <td>{{list.bookingEndTime}}</td>
           <td>{{list.userName}}</td>
@@ -57,3 +57,4 @@
     </table>
   </div>
 </div>
+<br><br><br>

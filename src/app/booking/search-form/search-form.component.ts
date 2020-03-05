@@ -44,6 +44,8 @@ export class SearchFormComponent implements OnInit {
   formFieldValues: Booking;
   errorMsg: any;
   successMsg:any;
+  cDate:any;
+  blueTheme:any;
 
   @ViewChild('ft', { static: true }) FT: ElementRef;
   @ViewChild('tt', { static: true }) TT: ElementRef;
