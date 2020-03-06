@@ -32,21 +32,17 @@ export class SearchResultsComponent implements OnInit {
     this.errorMsg = '';
     this.successMsg = '';
     this.bookingService.currentMessage.subscribe(data => {
-      //console.log('Data in Result Form ' + data);
       this.errorMsg = '';
       this.successMsg = '';
       this.bookingList = data;
-      console.log('Search Results in Result Panel : ' + this.bookingList)
     })
 
   }
 
   cancelBookedRoom(booking: Booking) {
-    //if(booking.)
     this.errorMsg = '';
     this.successMsg = '';
-    var bookID = booking.bookingId;//19;
-    console.log('Cancel Booking with ID  : ' + bookID);
+    var bookID = booking.bookingId;
     this.bookingService.cancelBooking(Number(bookID)).subscribe(
       data => this.handleCanceledData(data, booking),
       err => this.handleError(err)
@@ -55,7 +51,6 @@ export class SearchResultsComponent implements OnInit {
   }
 
   handleCanceledData(data: any, booking: Booking) {
-    console.log('Cancelled Success : ' + JSON.stringify(data))
     this.bookingList.forEach((item, index) => {
       if (item === booking) this.bookingList.splice(index, 1);
     });
@@ -64,13 +59,11 @@ export class SearchResultsComponent implements OnInit {
 
 
   handleError(err: HttpErrorResponse) {
-    console.log('Error in Cancel........', JSON.stringify(err));
     this.errorMsg = err.message;
   }
 
   doCancelButtonEnabled(empID: string) {
-    //empID = '821386'; // hardcode for now---
-    this.userID = localStorage.getItem(this.cons.userId)//this.authService.empId;
+    this.userID = localStorage.getItem(this.cons.userId)
     if (this.userID == empID) {
       return true;
     }

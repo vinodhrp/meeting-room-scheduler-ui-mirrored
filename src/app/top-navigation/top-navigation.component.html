@@ -1,5 +1,6 @@
+<app-spinner></app-spinner>
 <nav class="navbar navbar-expand-lg bg-info white-text">
-  <a class="navbar-brand white-text" href="#">Cognizant - Rabobank</a>
+  <a class="navbar-brand white-text" >Cognizant - Rabobank</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span><i class="material-icons white-text">reorder</i>
@@ -9,27 +10,19 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mx-auto">
       <li class="nav-item active">
-        <a class="navbar-brand nav-link white-text" href="#">Glass Room Booking</a>
+        <a class="navbar-brand nav-link white-text">Glass Room Booking</a>
       </li>
-      
-      <!-- <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-      </li> -->
     </ul>
     <div class="navbar navbar-expand-lg">
       <form class="form-inline my-2 my-lg-0" *ngIf="user != null">
-        <a class="nav-link white-text" href="#">Welcome : {{user.fullName}}</a>
+        <a class="nav-link white-text" >Welcome : {{user.fullName}}</a>
         <a class="btn btn-outline-danger" href="#" role="button" (click)="logout()">
-          Not Me ?
+          Logout
         </a>
       </form>
     </div>
   </div>
 </nav>
-
-
-
-
 
 <nav class="main-header navbar navbar-expand fixed-bottom bg-info white-text">
   <div class="container-fluid">

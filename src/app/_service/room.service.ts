@@ -9,11 +9,6 @@ import { ConstantService } from './constant.service';
 })
 export class RoomService {
 
-  //For testing
-  //jsonURL: string = 'assets/roomList.json';
-
-
-
   constructor(private http: HttpClient,
     private cons: ConstantService) { }
 

@@ -10,6 +10,8 @@ import { ConstantService } from 'src/app/_service/constant.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ErrorHandlerService } from 'src/app/_service/error-handler.service';
+import { NgxSpinnerService } from "ngx-spinner";
+
 @Component({
   selector: 'app-search-form',
   templateUrl: './search-form.component.html',
@@ -43,9 +45,8 @@ export class SearchFormComponent implements OnInit {
   bookingForm: FormGroup;
   formFieldValues: Booking;
   errorMsg: any;
-  successMsg:any;
-  cDate:any;
-  blueTheme:any;
+  successMsg: any;
+  cDate: any;
 
   @ViewChild('ft', { static: true }) FT: ElementRef;
   @ViewChild('tt', { static: true }) TT: ElementRef;
@@ -58,7 +59,7 @@ export class SearchFormComponent implements OnInit {
 
   constructor(private service: BookingService, private formBuilder: FormBuilder, private roomService: RoomService,
     private cons: ConstantService, private router: Router, private route: ActivatedRoute,
-    private errorHandler: ErrorHandlerService) {
+    private errorHandler: ErrorHandlerService, private spinner: NgxSpinnerService) {
 
     this.searchForm = this.formBuilder.group({});
     const currentYear = new Date().getFullYear();
@@ -78,11 +79,6 @@ export class SearchFormComponent implements OnInit {
     this.roomService.getAllRooms().subscribe(rooms => {
       this.roomList = rooms;
     })
-
-    // this.errorHandler.errorObj.asObservable().subscribe(error => {
-    //   console.log('Errror in Search Form : ' + error); // will return false if http error
-    //   this.errorThrown = error;
-    // });
 
   }
 
@@ -119,11 +115,10 @@ export class SearchFormComponent implements OnInit {
     }
   }
 
-  calculateTime(time):string {
+  calculateTime(time): string {
     if (time.length > 0) {
       if (time.substr(time.length - 2) == "PM") {
         if (time.substr(0, time.indexOf(":")) != "12") {
-         // this.fTime = (12 + parseInt(time.substr(0, time.indexOf(':')))) + ":" + time.substr(time.indexOf(':') + 1, 2) + ":00"
           return time = (12 + parseInt(time.substr(0, time.indexOf(':')))) + ":" + time.substr(time.indexOf(':') + 1, 2) + ":00"
         }
         else {
@@ -143,31 +138,26 @@ export class SearchFormComponent implements OnInit {
 
 
   fetchBookedData(roomId: any, date: any, fTime: any, toTime: any, reason: any) {
-    this.errorMsg ='';
+    this.spinner.show();
+    this.errorMsg = '';
     this.successMsg = '';
     fTime = fTime.value;
     toTime = toTime.value;
     date = date.value;
     reason = reason.value;
     roomId = roomId.value;
-    //if (date == "") {
-    //  this.errorMsg = "Date is mandatory";
 
-    //}
-    //else {
-      this.errorMsg = "";
-      let asim = new DateTimeFormatPipe(date);
-      var bookDate = asim.transform(date);
-      fTime = this.calculateTime(fTime);
-      toTime = this.calculateTime(toTime);
+    this.errorMsg = "";
+    let asim = new DateTimeFormatPipe(date);
+    var bookDate = asim.transform(date);
+    fTime = this.calculateTime(fTime);
+    toTime = this.calculateTime(toTime);
 
-      console.log('Search Values... : ', +roomId + ' ' + fTime + ' ' + toTime + ' ' + date + ' ' + reason);
-      let searchInfo = new Booking(roomId, this.usrEmpId, this.fullName, bookDate, fTime, toTime, reason);
-      this.service.getAllLists(searchInfo).subscribe(
-        data => this.handleSearchData(data),
-        error => this.handleError(error)
-      )
-    //}
+    let searchInfo = new Booking(roomId, this.usrEmpId, this.fullName, bookDate, fTime, toTime, reason);
+    this.service.getAllLists(searchInfo).subscribe(
+      data => (this.handleSearchData(data), this.spinner.hide()),
+      error => (this.handleError(error), this.spinner.hide())
+    )
   }
 
 
@@ -176,7 +166,6 @@ export class SearchFormComponent implements OnInit {
 
 
   handleSearchData(data: Booking[]) {
-    console.log('Data : ' + data.length);
     if (data.length > 0) {
       this.service.changeMessage(data);
     } else {
@@ -188,7 +177,8 @@ export class SearchFormComponent implements OnInit {
 
 
   bookRoom(roomId: any, date: any, fTime: any, toTime: any, reason: any) {
-    this.errorMsg ='';
+    this.spinner.show();
+    this.errorMsg = '';
     this.successMsg = '';
     fTime = fTime.value;
     toTime = toTime.value;
@@ -205,25 +195,24 @@ export class SearchFormComponent implements OnInit {
       fTime = this.calculateTime(fTime);
       toTime = this.calculateTime(toTime);
 
-      console.log('Booking Values... : ', +roomId + ' ' + fTime + ' ' + toTime + ' ' + date + ' ' + reason);
       let bookingDetail = new Booking(roomId, this.usrEmpId, this.fullName, bookDate, fTime, toTime, reason);
 
       this.service.bookRoom(bookingDetail)
         .subscribe(
-          data => this.handleBookedRoomData(data, bookingDetail),
-          err => this.handleError(err)
+          data => (this.handleBookedRoomData(data, bookingDetail), this.spinner.hide()
+          ),
+          err => (this.handleError(err), this.spinner.hide())
+
         )
 
 
     }
   }
-
-
-
   handleBookedRoomData(data: any, bookingDetail: Booking) {
     if (data.status == 200) {
       this.bookingSuccessMsg = "Booked Successfully !!!";
       this.showSuccess = true;
+
       this.successMsg = data.message ? data.message : this.bookingSuccessMsg
       this.service.getAllLists(bookingDetail).subscribe(data => {
         if (data.length > 0) {
@@ -233,27 +222,25 @@ export class SearchFormComponent implements OnInit {
         }
 
       });
+      setTimeout(() => {
+        this.showSuccess = false; this.successMsg = "";
+      }, 2500);
     }
   }
 
 
   handleError(err: HttpErrorResponse) {
-    this.errorMsg ='';
+    this.errorMsg = '';
     this.successMsg = '';
-    console.log('Error in Book/Search........', JSON.stringify(err));
-    console.log('Error Message : ', err.message);
-    this.errorMsg = err.message ? err.message  : 'Something went wrong';
+    this.errorMsg = err.message ? err.message : 'Something went wrong';
+    setTimeout(() => {
+      this.errorMsg = false;
+    }, 2500);
   }
 
   reset() {
-    console.log('reset.............')
+    this.spinner.show();
     window.location.reload();
-    // this.errorMsg ='';
-    // this.FT.nativeElement.value = "";
-    // this.TT.nativeElement.value = "";
-    // this.DATE.nativeElement.value = "";
-    // this.PURPOSE.nativeElement.value = "";
-    // this.router.navigate(['/booking'], { relativeTo: this.route });
   }
 
   setMinToTime(minute: HTMLInputElement) {

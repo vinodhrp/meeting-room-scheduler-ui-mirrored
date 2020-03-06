@@ -23,7 +23,6 @@ export class BookingService {
 
 
   changeMessage(message: Booking[]) {
-    console.log(message);
     this.updateResults.next(message)
   }
 
@@ -47,7 +46,6 @@ export class BookingService {
       bookingEndTime: booking.bookingEndTime,
       purpose: booking.purpose
     };
-    console.log('Booking Values in Service : ' +book);
     return this.http.post<Booking>(this.cons.baseURI + this.cons.bookRoom, book, { observe: 'response' });
   }
 

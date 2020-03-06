@@ -1,4 +1,5 @@
-<div class="container register-form border border-info" style="margin-top:30px;margin-bottom:30px">
+<div class="container register-form  border border-info" style="margin-top:30px;margin-bottom:30px"
+  *ngIf="bookingList != null && bookingList.length > 0">
 
   <div class="alert alert-danger" *ngIf="errorMsg">
     <a class="close" data-dismiss="alert" href="#"></a>{{errorMsg}}
@@ -33,7 +34,7 @@
           <th>Action</th>
         </tr>
       </thead>
-      <tbody *ngIf="bookingList != null && bookingList.length > 0">
+      <tbody>
         <tr *ngFor="let list of bookingList">
           <td>{{list.roomName}}</td>
           <td>{{list.bookingDate}}</td>
@@ -48,13 +49,13 @@
             <span class="btn btn-warn btn-sm">Cancel</span>
           </td>
         </tr>
+        
 
-      <tbody *ngIf="bookingList != null && bookingList.length === 0">
-        <tr>
-          <td colspan="8">No Records Found !!!</td>
-        </tr>
-      </tbody>
     </table>
   </div>
+</div>
+<br>
+<div class="alert alert-danger" *ngIf="bookingList != null && bookingList.length === 0">
+  <a class="close" data-dismiss="alert" href="#">x</a>No Records Found
 </div>
 <br><br><br>

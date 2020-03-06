@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/_service/auth.service';
 import { RestResponse } from 'src/app/_model/rest-response.model';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { NgxSpinnerService } from "ngx-spinner";
+
 
 @Component({
   selector: 'app-register',
@@ -19,7 +21,7 @@ export class RegisterComponent implements OnInit {
 
 
   constructor(private authService: AuthService,
-    private router: Router, private formBuilder: FormBuilder) { }
+    private router: Router, private formBuilder: FormBuilder, private spinner: NgxSpinnerService) { }
 
 
   ngOnInit() {
@@ -48,26 +50,27 @@ export class RegisterComponent implements OnInit {
     if (this.regForm.invalid) {
       return;
     }
-
-    console.log(' Reg Form Values :   ', this.regForm.value);
+    this.spinner.show();
     this.authService.register(this.regForm.value).subscribe(
-      data => this.handleRegisterResonse(data),
+      data => (this.handleRegisterResonse(data), this.spinner.hide()),
       err => {
-        console.log('Error in Registration........', err);
         this.handleInvalidReg(err);
+        this.spinner.hide();
       }
     );
 
   }
 
   private handleRegisterResonse(apiResponse: HttpResponse<RestResponse>) {
-    console.log('register success..........', apiResponse.status);
     if (apiResponse.status == 201) {
       this.authService.showMessage = true;
       this.router.navigate(["/login"]);
     } else {
       this.showError = true;
       this.regErrorMsg = 'Error In Registration  !!!';
+      setTimeout(() => {
+        this.showError = false;
+      }, 2500);
       this.router.navigate(["/register"]);
     }
   }
@@ -80,7 +83,9 @@ export class RegisterComponent implements OnInit {
   handleInvalidReg(err: HttpErrorResponse) {
     this.showError = true;
     this.regErrorMsg = err.message + '  !!!';
-    console.log('err ' + err);
+    setTimeout(() => {
+      this.showError = false;
+    }, 2500);
     this.router.navigate(["/register"]);
   }
 

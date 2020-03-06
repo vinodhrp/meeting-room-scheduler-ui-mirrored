@@ -1,3 +1,4 @@
+<app-spinner></app-spinner>
 <div class="container" style="margin-top:100px">
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default">
@@ -5,9 +6,9 @@
                 <h3 class="panel-title"><strong>Sign in </strong></h3>
 
             </div>
-
             <div class="panel-body">
-                <form role="form" id="quickForm" (ngSubmit)="onSubmit(heroForm)" #heroForm [formGroup]="loginForm" autocomplete="off">
+                <form role="form" id="quickForm" (ngSubmit)="onSubmit(heroForm)" #heroForm [formGroup]="loginForm"
+                    autocomplete="off">
 
                     <div class="alert alert-danger" *ngIf="showError">
                         <a class="" data-dismiss="alert" href="#"></a>{{loginErrorMsg}}
@@ -16,25 +17,21 @@
                     <div class="alert alert-primary" *ngIf="showSuccess">
                         <a class="" data-dismiss="alert" href="#"></a>{{regSuccessMsg}}
                     </div>
-
                     <div class="form-group">
-                        <!-- <label for="username">Username</label> -->
-                        <input type="text" name="username" class="form-control" id="username" formControlName="Username"
-                            [class.is-invalid]="loginForm.get('Username').invalid && loginForm.get('Username').touched"
-                            placeholder="Enter Username" required>
-                        <small [class.d-none]="loginForm.get('Username') .valid || loginForm.get('Username').untouched"
-                            class="text-danger">Username is required</small>
-                    </div>
-                    <div class="form-group">
-                        <!-- <label for="password">Password</label> -->
-                        <input type="password" name="password" class="form-control" formControlName="Password"
-                            [class.is-invalid]="loginForm.get('Password').invalid && loginForm.get('Password').touched"
-                            id="password" placeholder="Password" required>
-                        <small [class.d-none]="loginForm.get('Password') .valid || loginForm.get('Password').untouched"
-                            class="text-danger">Password is required</small>
+                        <input type="text" formControlName="Username" placeholder="Employee ID" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f.Username.errors }" />
+                        <div *ngIf="submitted && f.Username.errors" class="invalid-feedback">
+                            <div *ngIf="f.Username.errors.required">Employee ID is required</div>
+                        </div>
                     </div>
 
-
+                    <div class="form-group">
+                        <input type="password" formControlName="Password" placeholder="Password" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f.Password.errors }" />
+                        <div *ngIf="submitted && f.Password.errors" class="invalid-feedback">
+                            <div *ngIf="f.Password.errors.required">Password is required</div>
+                        </div>
+                    </div>
                     <div class="input-group">
 
                     </div>
