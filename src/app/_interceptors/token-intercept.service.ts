@@ -44,13 +44,9 @@ export class TokenInterceptService implements HttpInterceptor {
   }
 
   handleAuthHTTPErrorResponse(error: any) {
-    console.error(error + ' In Interceptor Error Code is :  ' + error);
-   // console.error(error + ' In Interceptor Error Code is :  ' + error && error.error.error ? error.error.error : 'Something went wrong !!!');
-
-
+  
     if (error instanceof HttpErrorResponse) {
       if (error.status === 401 && (error.error != null && error.error.error != 'Unauthorized')) {
-        console.log('Token Invalid Excpetion thrown..........')
         this.tokenExpiredHandler(); //Invalid token
       } else {
         this.errorService.errorObj.next(true);
@@ -61,7 +57,6 @@ export class TokenInterceptService implements HttpInterceptor {
           reason: error && error.error ? error.error.error : 'Something went wrong !!!',
           status: error.status
         };
-        console.log('Error thrown to component : ' +JSON.stringify(data));
         return throwError(data);
       }
     } else {

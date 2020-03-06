@@ -1,12 +1,14 @@
 
 import { Component, OnInit, ɵConsole, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/_service/auth.service';
 import { OAuth } from 'src/app/_model/o-auth.model';
 import { Login } from 'src/app/_model/login';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { NgxSpinnerService } from "ngx-spinner";
+
 
 @Component({
   selector: 'app-login',
@@ -19,28 +21,23 @@ export class LoginComponent implements OnInit {
 
   loginErrorMsg: String;
   showError: boolean;
-
+  submitted = false;
   regSuccessMsg: String;
   showSuccess: boolean;
   subscription: Subscription;
-
-  loginForm = new FormGroup({
-    Username: new FormControl('', [Validators.required, this.noWhitespaceValidator]),
-    Password: new FormControl('', [Validators.required, this.noWhitespaceValidator])
-  });
-
+  loginForm: FormGroup;
 
   constructor(private authService: AuthService,
-    private router: Router) {
-    console.log('Login Constructor.....')
+    private router: Router, private formBuilder: FormBuilder,private spinner: NgxSpinnerService) {
     this.getCustomMessage();
 
   }
 
   ngOnInit(): void {
-    console.log('Login Onnit.....')
-    //this.showError=false;
-    //this.showSuccess=false;
+    this.loginForm = this.formBuilder.group({
+      Username: ['', Validators.required],
+      Password: ['', [Validators.required]]
+    });
     var isLogged = this.authService.isAuthenticated();
     if (isLogged) {
       this.router.navigate(["/booking"]);
@@ -53,6 +50,9 @@ export class LoginComponent implements OnInit {
     if (this.authService.showMessage) {
       this.regSuccessMsg = 'Registered Successfully !!!';
       this.showSuccess = true;
+      setTimeout(() => {
+        this.showSuccess = false;
+      }, 2500);
       this.authService.showMessage = false;
       return;
     }
@@ -60,39 +60,42 @@ export class LoginComponent implements OnInit {
     if (this.authService.showAuthError) {
       this.loginErrorMsg = 'Session time out !!!';
       this.showError = true;
+      setTimeout(() => {
+        this.showError = false;
+      }, 2500);
       this.authService.showAuthError = false;
       return;
     }
   }
 
-  onSubmit1(heroForm): void {
-    console.log('onsubmit');
-    console.log(this.UserName.value);
-    console.log(this.Password.value);
-  }
+
+  get f() { return this.loginForm.controls; }
 
 
-  reset(){
-    console.log('Reset invoked : ')
+  reset() {
     this.loginForm.reset();
   }
 
-  onSubmit(form: any) {//of Type NgForm
-    // this.loginForm.markAllAsTouched();
-    this.showError=false;
-    this.showSuccess=false;
+  onSubmit(form: any) {
+    this.submitted = true;
+    if (this.loginForm.invalid) {
+      return;
+    }
+    this.showError = false;
+    this.showSuccess = false;
+    this.spinner.show();
     this.authService.aunthenticate(this.UserName.value, this.Password.value)
       .subscribe(
-        data => (this.redirecToDashBoard(data)),
-        err => {
-          console.log('Bad Credentials........', err)
+        data => (    this.spinner.hide(),
+        this.redirecToDashBoard(data)),
+        err => {    this.spinner.hide();
+
           this.handleInvalidLogin(err);
         }
       )
   }
 
   redirecToDashBoard(oauth: OAuth) {
-    console.log('Login Success with User Id ........', this.UserName.value)
     if (this.authService.isAuthenticated) {
       this.router.navigate(["/booking"]);
     } else {
@@ -103,7 +106,12 @@ export class LoginComponent implements OnInit {
   handleInvalidLogin(err: HttpErrorResponse) {
     this.showError = true;
     this.loginErrorMsg = 'Bad Credentials !!! ';
+    setTimeout(() => {
+      this.showError = false;
+    }, 2500);
+
     this.router.navigate(["/login"]);
+
   }
 
   get UserName() {

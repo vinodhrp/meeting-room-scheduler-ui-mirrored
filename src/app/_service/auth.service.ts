@@ -14,10 +14,6 @@ import { ConstantService } from './constant.service';
 })
 export class AuthService {
 
-
-  //regSuccess = new Subject<boolean>();
-  //sessionTimeOut = new Subject<boolean>();
-
   empId: string;
 
   showMessage:boolean;
@@ -26,7 +22,6 @@ export class AuthService {
   constructor(private httpClient: HttpClient, private cons: ConstantService) { }
 
   register(user: User): Observable<HttpResponse<RestResponse>> {
-    console.log('Value Of User in ng : ', user);
     return this.httpClient.post<RestResponse>(this.cons.baseURI + this.cons.register, user,{ observe: 'response' });
   }
 
@@ -41,8 +36,7 @@ export class AuthService {
       'Authorization': 'Basic ' + btoa('glassdoor:glassdoor'),
       'Content-type': 'application/x-www-form-urlencoded'
     }
-    console.log('Req Header : ', headers);
-    console.log('Req Body : ', body);
+  
     return this.httpClient.post<OAuth>(this.cons.baseURI + this.cons.token, body, { headers })
       .pipe(tap(token => this.saveAuthDetailsToStorage(token, username)));
   }
@@ -59,7 +53,6 @@ export class AuthService {
   public isAuthenticated(): boolean {
     const oAuthToken = localStorage.getItem(this.cons.accessToken);
     const emailId = localStorage.getItem(this.cons.userId);
-    //check cookie expiry also
     if (oAuthToken != null && emailId != null) {
       return true;
     }

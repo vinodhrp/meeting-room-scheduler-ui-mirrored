@@ -27,6 +27,9 @@ import { RouterModule } from '@angular/router';
 import { BottomNavigationComponent } from './bottom-navigation/bottom-navigation.component';
 import { DateTimeFormatPipe } from './date-time-format-pipe';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { SpinnerComponent } from './spinner/spinner.component';
+
 
 
 
@@ -43,6 +46,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     LeftNavigationComponent,
     BottomNavigationComponent,
     DateTimeFormatPipe,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,7 +59,8 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     MatInputModule,
     MatNativeDateModule,
     MatIconModule,
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
+    NgxSpinnerModule
 
   ],
   providers: [
