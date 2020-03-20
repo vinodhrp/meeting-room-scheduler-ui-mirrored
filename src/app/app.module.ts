@@ -31,7 +31,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { SpinnerComponent } from './spinner/spinner.component';
 import{ jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler'; 
 import { BookingSchedulerComponent } from './booking-scheduler/booking-scheduler.component';
-import { BookingSchedulerComponentCopy } from './booking-scheduler-copy/booking-scheduler-copy.component';
+//import { BookingSchedulerComponentCopy } from './booking-scheduler-copy/booking-scheduler-copy.component';
 import {MatRadioModule} from '@angular/material/radio';
 import { NgxAaaDatepickerModule } from 'ngx-aaa-datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -42,7 +42,7 @@ import {
   OwlDateTimeModule, 
   OwlNativeDateTimeModule 
 } from 'ng-pick-datetime';
-import { BookingSchedulerComponentUpdate } from './booking-scheduler-update/booking-scheduler-update.component';
+//import { BookingSchedulerComponentUpdate } from './booking-scheduler-update/booking-scheduler-update.component';
 import { jqxExpanderModule }   from 'jqwidgets-ng/jqxexpander';
 
 
@@ -65,8 +65,8 @@ import { jqxExpanderModule }   from 'jqwidgets-ng/jqxexpander';
     BookingSchedulerComponent,
     jqxSchedulerComponent,
     DatepickerDialogueComponent,
-    BookingSchedulerComponentCopy,
-    BookingSchedulerComponentUpdate
+    //BookingSchedulerComponentCopy,
+    //BookingSchedulerComponentUpdate
   ],
   entryComponents: [
     DatepickerDialogueComponent

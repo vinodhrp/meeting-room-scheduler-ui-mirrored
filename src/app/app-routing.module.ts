@@ -7,8 +7,8 @@ import { SearchFormComponent } from './booking/search-form/search-form.component
 import { SearchResultsComponent } from './booking/search-results/search-results.component';
 import { AuthGuard } from './_guard/auth-guard';
 import {BookingSchedulerComponent} from './booking-scheduler/booking-scheduler.component'
-import {BookingSchedulerComponentCopy} from './booking-scheduler-copy/booking-scheduler-copy.component'
-import { BookingSchedulerComponentUpdate } from './booking-scheduler-update/booking-scheduler-update.component';
+//import {BookingSchedulerComponentCopy} from './booking-scheduler-copy/booking-scheduler-copy.component'
+//import { BookingSchedulerComponentUpdate } from './booking-scheduler-update/booking-scheduler-update.component';
 
 /* const routes: Routes = [
   {path:"",component: LoginComponent},
@@ -32,8 +32,8 @@ const routes: Routes = [
   //{path:"search-result",component: SearchResultsComponent, canActivate: [AuthGuard]},
   {path:"search-result",component: SearchResultsComponent},
   {path:"booking-scheduler",component: BookingSchedulerComponent},
-  {path:"booking-scheduler-copy",component: BookingSchedulerComponentCopy},
-  {path:"booking-scheduler-update",component: BookingSchedulerComponentUpdate},
+  //{path:"booking-scheduler-copy",component: BookingSchedulerComponentCopy},
+  //{path:"booking-scheduler-update",component: BookingSchedulerComponentUpdate},
 ];
 
 @NgModule({
