@@ -44,9 +44,8 @@ import {
 } from 'ng-pick-datetime';
 //import { BookingSchedulerComponentUpdate } from './booking-scheduler-update/booking-scheduler-update.component';
 import { jqxExpanderModule }   from 'jqwidgets-ng/jqxexpander';
-
-
-
+import { BookingPageComponent } from './booking-dialog/booking-page.component';
+import { MatSelectModule } from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -65,11 +64,13 @@ import { jqxExpanderModule }   from 'jqwidgets-ng/jqxexpander';
     BookingSchedulerComponent,
     jqxSchedulerComponent,
     DatepickerDialogueComponent,
+    BookingPageComponent
     //BookingSchedulerComponentCopy,
     //BookingSchedulerComponentUpdate
   ],
   entryComponents: [
-    DatepickerDialogueComponent
+    DatepickerDialogueComponent,
+    BookingPageComponent
   ],
   imports: [
     BrowserModule,
@@ -82,6 +83,7 @@ import { jqxExpanderModule }   from 'jqwidgets-ng/jqxexpander';
     MatInputModule,
     MatNativeDateModule,
     MatIconModule,
+    MatSelectModule,
     NgxMaterialTimepickerModule,
     NgxSpinnerModule,
     MatRadioModule,

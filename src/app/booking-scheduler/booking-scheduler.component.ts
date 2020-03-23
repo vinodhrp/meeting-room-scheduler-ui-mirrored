@@ -2,12 +2,12 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler'
 import { DatepickerDialogueComponent } from '../datepicker-dialogue/datepicker-dialogue.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-
 import { Router } from '@angular/router';
 import {ThemePalette} from '@angular/material/core';
 import { MatSlideToggleChange, MatRadioChange, MatRadioButton } from '@angular/material';
+import { BookingPageComponent } from '../booking-dialog/booking-page.component';
 
 @Component({
     selector: 'app-booking-scheduler',
@@ -25,6 +25,7 @@ export class BookingSchedulerComponent implements AfterViewInit {
     isrequired: boolean = false;
     
     toTime: any; 
+    repeatType : any;
   
     constructor(
       private router : Router,
@@ -166,22 +167,14 @@ export class BookingSchedulerComponent implements AfterViewInit {
         'agendaView'
     ];
 
-    customButtonClick():void {
-      this.router.navigate(['booking']);
-    }
-
-    public monthClick(event: MatSlideToggleChange) {
-      console.log('toggle', event.checked);    
-      //this.useDefault = event.checked;
-  }
-
   openDatepicker(): void {
     const dialogRef = this.dialog.open(DatepickerDialogueComponent, {
       width: '400px'
     });
 
+    this.dateString = '';
     dialogRef.afterClosed().subscribe(data => {
-      this.dateString = '';
+      
       this.dates = [];
       if (data && data.hasDatePicked) {
         if (data.type === 'single' || data.type === 'multi') {
@@ -197,18 +190,44 @@ export class BookingSchedulerComponent implements AfterViewInit {
     });
   };
 
+  bookRoom(roomId: any, meetingType: any, comboOption: any, startTime: any, endTime: any) {
+    console.log(roomId.value);
+    console.log(meetingType.value);
+    console.log(this.repeatType);
+    console.log(startTime.value);
+    console.log(endTime.value);
+    console.log(this.dateString);
+  }
+
   onChange(mrChange: MatRadioChange) {
     console.log(mrChange.value);
+    this.repeatType = mrChange.value;
     let mrButton: MatRadioButton = mrChange.source;
     console.log(mrButton.name);
     console.log(mrButton.checked);
     console.log(mrButton.inputId);
 
-    if (mrButton.value == "5") {
+    if (mrButton.value == "Custom") {
       this.isrequired = true;
     } else {
     this.isrequired = false;
     }
  } 
+
+
+ openDialog() {
+
+  const dialogConfig = new MatDialogConfig();
+
+  dialogConfig.disableClose = true;
+  dialogConfig.autoFocus = true;
+  dialogConfig.data = {
+    id: 1,
+    title: 'Angular For Beginners'
+};
+
+
+  this.dialog.open(BookingPageComponent, dialogConfig);
+}
   
 }
