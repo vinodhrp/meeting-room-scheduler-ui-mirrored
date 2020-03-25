@@ -1,4 +1,4 @@
-<!-- <app-spinner></app-spinner>
+ <app-spinner></app-spinner>
 
     <div class="row">
         <div class="container register-form border border-info" style="margin-top:30px"><br>
@@ -34,12 +34,10 @@
 
                                     <span class="text-danger"><strong>* </strong></span>
                                     <select #rId class="form-control drop" id="sel1">
-                                        <option value="0">--G1--</option>
-                                        <option value="1">--G2--</option>
-                                        <option value="2">--G3--</option>
-
+                                        <option value="0">--All--</option>
                                         <option *ngFor="let room of roomList" value={{room.id}}>
                                             {{room.roomName}}
+                                            
                                         </option>
                                     </select>
                                 </div>
@@ -49,15 +47,11 @@
                                 <div class="form-group">
 
                                     <span class="text-danger"><strong>* </strong></span>
-                                    <select #meetingType class="form-control drop" id="sel1">
+                                    <select #meetingTypeId class="form-control drop" id="sel2">
                                         <option value="0">--All--</option>
-                                        <option value="1">Sprint Planning</option>
-                                        <option value="2">standup meeting</option>
-                                        <option value="3">retro meeting</option>
-
-                                        <option value="0"></option>
-                                        <option *ngFor="let meeting of meetingList" value={{meeting.id}}>
-                                            {{room.roomName}}
+                                     
+                                        <option *ngFor="let meetingType of meetingTypeList" value={{meetingType.purposeId}}>
+                                            {{meetingType.purpose}}
                                         </option>
                                     </select>
                                 </div>
@@ -68,11 +62,11 @@
 
                                     <br>
                                     <mat-radio-group #comboOption aria-label="Select an option" (change)="onChange($event)">
-                                        <mat-radio-button value="Today">Today</mat-radio-button>&nbsp;&nbsp;
-                                        <mat-radio-button value="Tomorrow">Tomorrow</mat-radio-button>&nbsp;&nbsp;
-                                        <mat-radio-button value="Weekly">Weekly</mat-radio-button>&nbsp;&nbsp;
-                                        <mat-radio-button value="Monthly">Monthly</mat-radio-button>&nbsp;&nbsp;
-                                        <mat-radio-button value="Custom">Custom</mat-radio-button>&nbsp;&nbsp;
+                                        <mat-radio-button value="today">Today</mat-radio-button>&nbsp;&nbsp;
+                                        <mat-radio-button value="tomorrow">Tomorrow</mat-radio-button>&nbsp;&nbsp;
+                                        <mat-radio-button value="week">Weekly</mat-radio-button>&nbsp;&nbsp;
+                                        <mat-radio-button value="month">Monthly</mat-radio-button>&nbsp;&nbsp;
+                                        <mat-radio-button value="custom">Custom</mat-radio-button>&nbsp;&nbsp;
 
                                     </mat-radio-group>
                                 </div>
@@ -83,7 +77,7 @@
 
                                     <br>
                                     <input [owlDateTime]="dt1" #startTime [owlDateTimeTrigger]="dt1" placeholder="Start Time">
-                                    <owl-date-time #dt1 pickerType="timer"> </owl-date-time>
+                                    <owl-date-time  #dt1 pickerType="timer"> </owl-date-time>
 
 
                                     <input [owlDateTime]="dt2" #endTime [owlDateTimeTrigger]="dt2" placeholder="End Time">
@@ -108,14 +102,12 @@
                         <div class="form-group">
                             <span class="text-danger"><strong>*</strong> </span> mandatory for Book
                         </div>
-
+ 
                         <div class="input-group">
                         </div>
 
-                        
-
                         <button type="submit" class="btn btn-info btn-space"
-                            (click)="bookRoom(rId, meetingType, comboOption, startTime, endTime)">Book</button>
+                            (click)="bookRoom(rId, meetingTypeId, startTime, endTime)">Book</button>
 
                         <button type="button" class="btn btn-info btn-space" (click)="reset()">Reset</button> 
 
@@ -123,16 +115,14 @@
 
  </div>
  </div> 
- </div>  -->
+ </div> 
                    
  
-                       <h2 mat-dialog-title>Create Scchedule</h2>
+                <!--     <h2 mat-dialog-title>Create Scchedule</h2>
 
 <mat-dialog-content [formGroup]="form">
 
-        <mat-select placeholder="Select meetingRoom"
-            formControlName="category">
-
+        <mat-select placeholder="meetingRoom" formControlName="meetingroom">
             <mat-option value="G1">
                 G1</mat-option>
             <mat-option value="G2">
@@ -142,10 +132,10 @@
 
         </mat-select>
 
+        <br>
+        <br>
 
-        <mat-select placeholder="Select meetingType"
-        formControlName="category">
-
+        <mat-select placeholder="meetingType" formControlName="meetingtype"> 
         <mat-option value="G1">
             Sprint Planning</mat-option>
         <mat-option value="G2">
@@ -157,6 +147,7 @@
 
     <br>
     <br>
+    <br>
 
     <mat-radio-group #comboOption aria-label="Select an option" (change)="onChange($event)">
         <mat-radio-button value="Today">Today</mat-radio-button>&nbsp;&nbsp;
@@ -164,19 +155,22 @@
         <mat-radio-button value="Weekly">Weekly</mat-radio-button>&nbsp;&nbsp;
        
         <mat-radio-button value="Monthly">Monthly</mat-radio-button>&nbsp;&nbsp;
-        <br>
+       
         <mat-radio-button value="Custom">Custom</mat-radio-button>&nbsp;&nbsp;
 
     </mat-radio-group>
 
+        <br>
+        <br>
+       
     
         <mat-form-field>
-        <input  matInput [owlDateTime]="dt1" #startTime [owlDateTimeTrigger]="dt1" placeholder="Start Time">
+        <input  matInput [owlDateTime]="dt1" #startTime [owlDateTimeTrigger]="dt1" formControlName="starttime" placeholder="Start Time">
         <owl-date-time #dt1 pickerType="timer"> </owl-date-time>
         </mat-form-field>
 
         <mat-form-field>
-        <input matInput [owlDateTime]="dt2" #endTime [owlDateTimeTrigger]="dt2" placeholder="End Time">
+        <input matInput [owlDateTime]="dt2" #endTime [owlDateTimeTrigger]="dt2" formControlName="endtime" placeholder="End Time">
         <owl-date-time #dt2 pickerType="timer"> </owl-date-time>
         </mat-form-field>
         
@@ -184,7 +178,7 @@
         <div *ngIf="isrequired">
         <mat-form-field style="width: 50%;"  appearance="outline">
             <mat-label>Pick date/dates</mat-label>
-            <textarea matInput [(ngModel)]="dateString"  cdkTextareaAutosize
+            <textarea matInput [(ngModel)]="dateString" [ngModelOptions]="{standalone: true}" cdkTextareaAutosize
                 #autosize="cdkTextareaAutosize" readonly cdkAutosizeMinRows="1"
                 cdkAutosizeMaxRows="5"></textarea>
             <mat-icon matSuffix (click)="openDatepicker()" style="cursor: pointer;">
@@ -192,11 +186,13 @@
         </mat-form-field>
     </div>
 
- 
 </mat-dialog-content>
+
+<br>
+<br>
 
 <mat-dialog-actions>
     <button class="mat-raised-button"(click)="close()">Close</button>
     <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
-</mat-dialog-actions> 
+</mat-dialog-actions> -->
  

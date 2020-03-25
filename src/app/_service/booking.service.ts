@@ -29,7 +29,7 @@ export class BookingService {
   getAllLists(searchInfo: Booking): Observable<Booking[]> {
     const search = {
       roomId: searchInfo.roomId,
-      bookingDate: searchInfo.bookingDate,
+      //bookingDate: searchInfo.bookingDate,
       bookingStartTime: searchInfo.bookingStartTime,
       bookingEndTime: searchInfo.bookingEndTime
     };
@@ -41,11 +41,15 @@ export class BookingService {
     const book = {
       roomId: booking.roomId,
       usrEmpId: booking.usrEmpId,
-      bookingDate: booking.bookingDate,
       bookingStartTime: booking.bookingStartTime,
       bookingEndTime: booking.bookingEndTime,
-      purpose: booking.purpose
+      meetingTypeId: booking.meetingTypeId,
+      bookingMode : booking.bookingMode,
+      customBookingDate : booking.customBookingDate
     };
+
+    console.log(JSON.stringify(book));
+
     return this.http.post<Booking>(this.cons.baseURI + this.cons.bookRoom, book, { observe: 'response' });
   }
 

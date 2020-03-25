@@ -167,28 +167,7 @@ export class BookingSchedulerComponent implements AfterViewInit {
         'agendaView'
     ];
 
-  openDatepicker(): void {
-    const dialogRef = this.dialog.open(DatepickerDialogueComponent, {
-      width: '400px'
-    });
-
-    this.dateString = '';
-    dialogRef.afterClosed().subscribe(data => {
-      
-      this.dates = [];
-      if (data && data.hasDatePicked) {
-        if (data.type === 'single' || data.type === 'multi') {
-          this.dates = data.dates;
-        }
-        else {
-          this.dates = data.dates.days;
-        }
-        this.dates.forEach((date) => {
-          this.dateString = this.datePipe.transform(date, 'd MMM y') +', '+this.dateString;
-        });
-      }
-    });
-  };
+  
 
   bookRoom(roomId: any, meetingType: any, comboOption: any, startTime: any, endTime: any) {
     console.log(roomId.value);
@@ -225,8 +204,6 @@ export class BookingSchedulerComponent implements AfterViewInit {
     id: 1,
     title: 'Angular For Beginners'
 };
-
-
   this.dialog.open(BookingPageComponent, dialogConfig);
 }
   

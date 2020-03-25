@@ -19,6 +19,7 @@ export class DatepickerDialogueComponent implements OnInit {
     single: true, // disable/enable single date picker mode
     multi: true, // disable/enable multiple date picker mode
     range: true // disable/enable range date picker mode
+    
   }
   getDate(event) {
     this.dialogRef.close(event);
