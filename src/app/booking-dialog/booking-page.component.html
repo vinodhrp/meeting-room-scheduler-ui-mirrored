@@ -1,0 +1,198 @@
+ <app-spinner></app-spinner>
+
+    <div class="row">
+        <div class="container register-form border border-info" style="margin-top:30px"><br>
+            <div class="alert alert-danger" *ngIf="errorMsg">
+                <a class="close" data-dismiss="alert" href="#"></a>{{errorMsg}}
+            </div>
+
+            <div class="alert alert-success" *ngIf="successMsg">
+                <a class="close" data-dismiss="alert" href="#"></a>{{successMsg}}
+            </div>
+           
+            <div class="panel panel-default ">
+
+                <div class="panel-heading">
+                    <div style="float:right; font-size: 80%; position: relative; top:-10px">
+                    </div>
+                </div>
+
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Create Schedule </strong></h3>
+                    <hr>
+                    <div style="float:right; font-size: 80%; position: relative; top:-10px">
+                    </div>
+                </div>
+
+                <div class="panel-body">
+
+                    <div role="form" id="quickForm" class="form" aria-autocomplete="none">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6">
+
+                                <div class="form-group">
+
+                                    <span class="text-danger"><strong>* </strong></span>
+                                    <select #rId class="form-control drop" id="sel1">
+                                        <option value="0">--All--</option>
+                                        <option *ngFor="let room of roomList" value={{room.id}}>
+                                            {{room.roomName}}
+                                            
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6">
+
+                                <div class="form-group">
+
+                                    <span class="text-danger"><strong>* </strong></span>
+                                    <select #meetingTypeId class="form-control drop" id="sel2">
+                                        <option value="0">--All--</option>
+                                     
+                                        <option *ngFor="let meetingType of meetingTypeList" value={{meetingType.purposeId}}>
+                                            {{meetingType.purpose}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-6 col-md-6">
+                                <div class="form-group">
+
+                                    <br>
+                                    <mat-radio-group #comboOption aria-label="Select an option" (change)="onChange($event)">
+                                        <mat-radio-button value="today">Today</mat-radio-button>&nbsp;&nbsp;
+                                        <mat-radio-button value="tomorrow">Tomorrow</mat-radio-button>&nbsp;&nbsp;
+                                        <mat-radio-button value="week">Weekly</mat-radio-button>&nbsp;&nbsp;
+                                        <mat-radio-button value="month">Monthly</mat-radio-button>&nbsp;&nbsp;
+                                        <mat-radio-button value="custom">Custom</mat-radio-button>&nbsp;&nbsp;
+
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-6 col-md-6">
+                                <div class="form-group">
+
+                                    <br>
+                                    <input [owlDateTime]="dt1" #startTime [owlDateTimeTrigger]="dt1" placeholder="Start Time">
+                                    <owl-date-time  #dt1 pickerType="timer"> </owl-date-time>
+
+
+                                    <input [owlDateTime]="dt2" #endTime [owlDateTimeTrigger]="dt2" placeholder="End Time">
+                                    <owl-date-time #dt2 pickerType="timer"> </owl-date-time>
+
+
+                                </div>
+                            </div>
+
+                            <div *ngIf="isrequired">
+                                <mat-form-field style="width: 100%;" appearance="outline">
+                                    <mat-label>Pick date/dates</mat-label>
+                                    <textarea [(ngModel)]="dateString" matInput cdkTextareaAutosize
+                                        #autosize="cdkTextareaAutosize" readonly cdkAutosizeMinRows="1"
+                                        cdkAutosizeMaxRows="5"></textarea>
+                                    <mat-icon matSuffix (click)="openDatepicker()" style="cursor: pointer;">
+                                        calendar_today</mat-icon>
+                                </mat-form-field>
+                            </div>            
+                        </div>
+
+                        <div class="form-group">
+                            <span class="text-danger"><strong>*</strong> </span> mandatory for Book
+                        </div>
+ 
+                        <div class="input-group">
+                        </div>
+
+                        <button type="submit" class="btn btn-info btn-space"
+                            (click)="bookRoom(rId, meetingTypeId, startTime, endTime)">Book</button>
+
+                        <button type="button" class="btn btn-info btn-space" (click)="reset()">Reset</button> 
+
+                        <button type="button" class="btn btn-info btn-space" (click)="close()">Close</button> 
+
+ </div>
+ </div> 
+ </div> 
+                   
+ 
+                <!--     <h2 mat-dialog-title>Create Scchedule</h2>
+
+<mat-dialog-content [formGroup]="form">
+
+        <mat-select placeholder="meetingRoom" formControlName="meetingroom">
+            <mat-option value="G1">
+                G1</mat-option>
+            <mat-option value="G2">
+                G2</mat-option>
+            <mat-option value="G3">
+                G3</mat-option>
+
+        </mat-select>
+
+        <br>
+        <br>
+
+        <mat-select placeholder="meetingType" formControlName="meetingtype"> 
+        <mat-option value="G1">
+            Sprint Planning</mat-option>
+        <mat-option value="G2">
+            standup meeting</mat-option>
+        <mat-option value="G3">
+            retro meeting</mat-option>
+
+    </mat-select>
+
+    <br>
+    <br>
+    <br>
+
+    <mat-radio-group #comboOption aria-label="Select an option" (change)="onChange($event)">
+        <mat-radio-button value="Today">Today</mat-radio-button>&nbsp;&nbsp;
+        <mat-radio-button value="Tomorrow">Tomorrow</mat-radio-button>&nbsp;&nbsp;
+        <mat-radio-button value="Weekly">Weekly</mat-radio-button>&nbsp;&nbsp;
+       
+        <mat-radio-button value="Monthly">Monthly</mat-radio-button>&nbsp;&nbsp;
+       
+        <mat-radio-button value="Custom">Custom</mat-radio-button>&nbsp;&nbsp;
+
+    </mat-radio-group>
+
+        <br>
+        <br>
+       
+    
+        <mat-form-field>
+        <input  matInput [owlDateTime]="dt1" #startTime [owlDateTimeTrigger]="dt1" formControlName="starttime" placeholder="Start Time">
+        <owl-date-time #dt1 pickerType="timer"> </owl-date-time>
+        </mat-form-field>
+
+        <mat-form-field>
+        <input matInput [owlDateTime]="dt2" #endTime [owlDateTimeTrigger]="dt2" formControlName="endtime" placeholder="End Time">
+        <owl-date-time #dt2 pickerType="timer"> </owl-date-time>
+        </mat-form-field>
+        
+
+        <div *ngIf="isrequired">
+        <mat-form-field style="width: 50%;"  appearance="outline">
+            <mat-label>Pick date/dates</mat-label>
+            <textarea matInput [(ngModel)]="dateString" [ngModelOptions]="{standalone: true}" cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize" readonly cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"></textarea>
+            <mat-icon matSuffix (click)="openDatepicker()" style="cursor: pointer;">
+                calendar_today</mat-icon>
+        </mat-form-field>
+    </div>
+
+</mat-dialog-content>
+
+<br>
+<br>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">Close</button>
+    <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
+</mat-dialog-actions> -->
+ 

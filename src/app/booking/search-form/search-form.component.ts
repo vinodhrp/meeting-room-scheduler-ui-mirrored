@@ -154,11 +154,11 @@ export class SearchFormComponent implements OnInit {
     fTime = this.calculateTime(fTime);
     toTime = this.calculateTime(toTime);
 
-    let searchInfo = new Booking(roomId, this.usrEmpId, this.fullName, bookDate, fTime, toTime, reason);
+    /*let searchInfo = new Booking(roomId, this.usrEmpId, this.fullName, bookDate, fTime, toTime, reason);
     this.service.getAllLists(searchInfo).subscribe(
       data => (this.handleSearchData(data), this.spinner.hide()),
       error => (this.handleError(error), this.spinner.hide())
-    )
+    )*/
   }
 
 
@@ -197,16 +197,15 @@ export class SearchFormComponent implements OnInit {
       fTime = this.calculateTime(fTime);
       toTime = this.calculateTime(toTime);
 
-      let bookingDetail = new Booking(roomId, this.usrEmpId, this.fullName, bookDate, fTime, toTime, reason);
+      //let bookingDetail = new Booking(roomId, this.usrEmpId, this.fullName, bookDate, fTime, toTime, reason);
 
-      this.service.bookRoom(bookingDetail)
+      /*this.service.bookRoom(bookingDetail)
         .subscribe(
           data => (this.handleBookedRoomData(data, bookingDetail), this.spinner.hide()
           ),
           err => (this.handleError(err), this.spinner.hide())
 
-        )
-
+        )*/
 
     }
   }

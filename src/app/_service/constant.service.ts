@@ -8,9 +8,9 @@ export class ConstantService {
   constructor() { }
 
 
-  //baseURI ='http://localhost:8080';
+  baseURI ='http://localhost:8086';
 
-  baseURI = 'https://glassroom-scheduler.cfapps.io';
+  //baseURI = 'https://glassroom-scheduler.cfapps.io';
 
   refreshToken = 'refresh_token';
   userId = 'user_id';
@@ -29,5 +29,7 @@ export class ConstantService {
   fetchRooms = '/room/fetchrooms';
 
   token = '/oauth/token';
+
+  fetchMeetingTypes = '/meetingroom/fetchBookingPurposes';
 
 }

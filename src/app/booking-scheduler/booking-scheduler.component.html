@@ -1,0 +1,21 @@
+<app-spinner></app-spinner>
+<div class="container">
+    <div class="row">
+       
+            </div>
+
+            <div class="row">
+                <div class="col-md-3"></div>
+
+                <div class="col-md-12">
+                    <button (click)="openDialog()">Book New Room</button>
+
+                            <jqxScheduler #scheduler [date]="date" [source]="dataAdapter" [dayNameFormat]="'abbr'"
+                                [showLegend]="true" [view]="'agendaView'" [resources]="resources" [views]="views"
+                                [appointmentDataFields]="appointmentDataFields">
+                            </jqxScheduler>
+                        </div>
+
+            </div>
+
+        </div>
