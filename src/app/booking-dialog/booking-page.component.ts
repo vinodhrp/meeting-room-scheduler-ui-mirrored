@@ -39,7 +39,7 @@ export class BookingPageComponent implements OnInit {
     subscription: Subscription;
     bookingSuccessMsg: String;
     showSuccess: boolean;
-
+    minDate : String;
     
     @ViewChild('rId', { static: true }) ID: ElementRef;
     constructor(
@@ -50,7 +50,15 @@ export class BookingPageComponent implements OnInit {
         public dialog: MatDialog, 
         public datePipe: DatePipe,
         private dialogRef: MatDialogRef<BookingPageComponent>,
+
+        
+
         @Inject(MAT_DIALOG_DATA) {}:any) {
+
+        const currentYear = new Date().getFullYear();
+        const currentMonth = new Date().getMonth();
+        const currentDay = new Date().getDate();
+        this.minDate = currentYear +"-"+ +"0"+ +"4" +"-"+ currentDay;
 
     }
 
@@ -133,8 +141,10 @@ export class BookingPageComponent implements OnInit {
        this.dateString = this.dateString.substr(0, this.dateString.length - 2);
        var customeBookingDates = this.dateString.split(","); 
        console.log(customeBookingDates);
-       
-      let bookingDetail = new Booking(roomId.value, 1001, this.startTime, this.endTime, meetingTypeId.value, this.meetingMode, customeBookingDates);
+       console.log(this.minDate);
+
+      let bookingDetail = new Booking(roomId.value, 1001, this.startTime, this.endTime, meetingTypeId.value, 
+        this.meetingMode, customeBookingDates, this.minDate);
 
       this.spinner.show();
       this.errorMsg = "";

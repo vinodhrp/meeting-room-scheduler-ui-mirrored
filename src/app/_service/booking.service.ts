@@ -45,7 +45,8 @@ export class BookingService {
       bookingEndTime: booking.bookingEndTime,
       meetingTypeId: booking.meetingTypeId,
       bookingMode : booking.bookingMode,
-      customBookingDate : booking.customBookingDate
+      customBookingDate : booking.customBookingDate,
+      bookingStartDate : booking.bookingStartDate
     };
 
     console.log(JSON.stringify(book));
