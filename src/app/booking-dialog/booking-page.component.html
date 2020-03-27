@@ -87,6 +87,16 @@
                                 </div>
                             </div>
 
+                            <div *ngIf="enableStartDate" class="col-xs-12 col-sm-6 col-md-6">
+                                <div class="form-group">
+
+                                    <br>
+                                    <input  [owlDateTimeFilter]="myFilter"  [owlDateTime]="startdate" #startDate [owlDateTimeTrigger]="startdate" placeholder="Start Date">
+                                    <owl-date-time  #startdate pickerType="calendar"  > </owl-date-time>
+
+                                </div>
+                            </div>
+
                             <div *ngIf="isrequired">
                                 <mat-form-field style="width: 100%;" appearance="outline">
                                     <mat-label>Pick date/dates</mat-label>
