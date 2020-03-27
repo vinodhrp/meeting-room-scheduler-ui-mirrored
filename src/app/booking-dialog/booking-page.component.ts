@@ -40,8 +40,10 @@ export class BookingPageComponent implements OnInit {
     bookingSuccessMsg: String;
     showSuccess: boolean;
     minDate : String;
+   
     
     @ViewChild('rId', { static: true }) ID: ElementRef;
+  enableStartDate: boolean;
     constructor(
         private service: BookingService,
         private roomService: RoomService,
@@ -63,6 +65,7 @@ export class BookingPageComponent implements OnInit {
     }
 
     ngOnInit() {
+     
         this.form = this.fb.group({
             meetingroom: [this.meetingroom, []]
         });
@@ -80,6 +83,7 @@ export class BookingPageComponent implements OnInit {
          })
 
     }
+
 
     openDatepicker(): void {
         const dialogRef = this.dialog.open(DatepickerDialogueComponent, {
@@ -120,6 +124,12 @@ export class BookingPageComponent implements OnInit {
           this.isrequired = true;
         } else {
         this.isrequired = false;
+        }
+
+        if(mrButton.value == "week" ||  mrButton.value =="month"){
+          this.enableStartDate = true;
+        }else{
+          this.enableStartDate = false;
         }
      } 
 
@@ -204,6 +214,13 @@ export class BookingPageComponent implements OnInit {
     }
   }
     
+  public myFilter = (d: Date): boolean => {
+    const day = d.getDay();
+    let today = new Date();
+    today.setHours(0,0,0,0);
+    // Prevent Saturday and Sunday from being selected.
+    return day !== 0 && day !== 6 && d >= today;
+}
 }
 
     
